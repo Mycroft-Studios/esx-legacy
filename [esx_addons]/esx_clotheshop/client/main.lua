@@ -131,7 +131,7 @@ end)
 CreateThread(function()
 	while true do
 		Wait(0)
-		local playerCoords, isInMarker, currentZone, letSleep = GetEntityCoords(PlayerPedId()), false, nil, true
+		local playerCoords, isInMarker, currentZone, letSleep = GetEntityCoords(LocalPlayer.state.info.ped), false, nil, true
 
 		for k,v in pairs(Config.Shops) do
 			local distance = #(playerCoords - v)

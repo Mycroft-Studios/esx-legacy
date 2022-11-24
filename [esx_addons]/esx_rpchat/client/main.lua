@@ -3,7 +3,7 @@ AddEventHandler('esx_rpchat:sendProximityMessage', function(playerId, title, mes
 	local player = PlayerId()
 	local target = GetPlayerFromServerId(playerId)
 
-	local playerPed = PlayerPedId()
+	local playerPed = LocalPlayer.state.info.ped
 	local targetPed = GetPlayerPed(target)
 	local playerCoords = GetEntityCoords(playerPed)
 	local targetCoords = GetEntityCoords(targetPed)

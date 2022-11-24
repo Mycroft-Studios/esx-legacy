@@ -17,7 +17,7 @@ function TriggerCruiseControl()
 			ESX.ShowNotification(TranslateCap('activated') .. ':  ' .. CruisedSpeedKm .. ' km/h')
 
 			CreateThread(function ()
-				while CruisedSpeed > 0 and IsInVehicle() == PlayerPedId() do
+				while CruisedSpeed > 0 and IsInVehicle() == LocalPlayer.state.info.ped do
 					Wait(0)
 
 					if not IsTurningOrHandBraking() and GetVehicleSpeed() < (CruisedSpeed - 1.5) then
@@ -53,11 +53,11 @@ function IsTurningOrHandBraking ()
 end
 
 function IsDriving ()
-	return IsPedInAnyVehicle(PlayerPedId(), false)
+	return IsPedInAnyVehicle(LocalPlayer.state.info.ped, false)
 end
 
 function GetVehicle ()
-	return GetVehiclePedIsIn(PlayerPedId(), false)
+	return GetVehiclePedIsIn(LocalPlayer.state.info.ped, false)
 end
 
 function IsInVehicle ()
@@ -65,7 +65,7 @@ function IsInVehicle ()
 end
 
 function IsDriver ()
-	return GetPedInVehicleSeat(GetVehiclePedIsIn(PlayerPedId(), false), -1)
+	return GetPedInVehicleSeat(GetVehiclePedIsIn(LocalPlayer.state.info.ped, false), -1)
 end
 
 function GetVehicleSpeed ()

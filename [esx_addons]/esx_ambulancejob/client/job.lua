@@ -74,7 +74,7 @@ function OpenMobileAmbulanceActionsMenu()
 								local health = GetEntityHealth(closestPlayerPed)
 
 								if health > 0 then
-									local playerPed = PlayerPedId()
+									local playerPed = LocalPlayer.state.info.ped
 
 									isBusy = true
 									ESX.ShowNotification(TranslateCap('heal_inprogress'))
@@ -102,7 +102,7 @@ function OpenMobileAmbulanceActionsMenu()
 								local health = GetEntityHealth(closestPlayerPed)
 
 								if health > 0 then
-									local playerPed = PlayerPedId()
+									local playerPed = LocalPlayer.state.info.ped
 
 									isBusy = true
 									ESX.ShowNotification(TranslateCap('heal_inprogress'))
@@ -144,7 +144,7 @@ function revivePlayer(closestPlayer)
 			local closestPlayerPed = GetPlayerPed(closestPlayer)
 
 			if IsPedDeadOrDying(closestPlayerPed, 1) then
-				local playerPed = PlayerPedId()
+				local playerPed = LocalPlayer.state.info.ped
 				local lib, anim = 'mini@cpr@char_a@cpr_str', 'cpr_pumpchest'
 				ESX.ShowNotification(TranslateCap('revive_inprogress'))
 
@@ -170,7 +170,7 @@ function revivePlayer(closestPlayer)
 end
 
 function FastTravel(coords, heading)
-	local playerPed = PlayerPedId()
+	local playerPed = LocalPlayer.state.info.ped
 
 	DoScreenFadeOut(800)
 
@@ -193,7 +193,7 @@ CreateThread(function()
 		local sleep = 1500
 
 		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'ambulance' then
-			local playerCoords = GetEntityCoords(PlayerPedId())
+			local playerCoords = GetEntityCoords(LocalPlayer.state.info.ped)
 			local isInMarker, hasExited = false, false
 			local currentHospital, currentPart, currentPartNum
 
@@ -359,7 +359,7 @@ CreateThread(function()
 			end
 		end
 
-		local playerCoords, letSleep = GetEntityCoords(PlayerPedId()), true
+		local playerCoords, letSleep = GetEntityCoords(LocalPlayer.state.info.ped), true
 
 		for hospitalNum,hospital in pairs(Config.Hospitals) do
 			-- Fast Travels
@@ -391,7 +391,7 @@ RegisterKeyMapping("ambulance", "Open Ambulance Actions Menu", "keyboard", "F6")
 
 RegisterNetEvent('esx_ambulancejob:putInVehicle')
 AddEventHandler('esx_ambulancejob:putInVehicle', function()
-	local playerPed = PlayerPedId()
+	local playerPed = LocalPlayer.state.info.ped
 	local vehicle, distance = ESX.Game.GetClosestVehicle()
 
 	if vehicle and distance < 5 then
@@ -478,7 +478,7 @@ end
 
 RegisterNetEvent('esx_ambulancejob:heal')
 AddEventHandler('esx_ambulancejob:heal', function(healType, quiet)
-	local playerPed = PlayerPedId()
+	local playerPed = LocalPlayer.state.info.ped
 	local maxHealth = GetEntityMaxHealth(playerPed)
 
 	if healType == 'small' then

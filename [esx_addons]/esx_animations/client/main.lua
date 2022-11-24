@@ -2,19 +2,19 @@ local inAnim = false
 
 function startAttitude(lib, anim)
 	ESX.Streaming.RequestAnimSet(lib, function()
-		SetPedMovementClipset(PlayerPedId(), anim, true)
+		SetPedMovementClipset(LocalPlayer.state.info.ped, anim, true)
 	end)
 end
 
 function startAnim(lib, anim)
 	ESX.Streaming.RequestAnimDict(lib, function()
-		TaskPlayAnim(PlayerPedId(), lib, anim, 8.0, -8.0, -1, 0, 0.0, false, false, false)
+		TaskPlayAnim(LocalPlayer.state.info.ped, lib, anim, 8.0, -8.0, -1, 0, 0.0, false, false, false)
 		RemoveAnimDict(lib)
 	end)
 end
 
 function startScenario(anim)
-	TaskStartScenarioInPlace(PlayerPedId(), anim, 0, false)
+	TaskStartScenarioInPlace(LocalPlayer.state.info.ped, anim, 0, false)
 end
 
 function OpenAnimationsMenu()
@@ -83,7 +83,7 @@ end, false)
 
 RegisterCommand('cleartasks', function()
 	if not LocalPlayer.state.info.dead then
-	ClearPedTasks(PlayerPedId())
+	ClearPedTasks(LocalPlayer.state.info.ped)
 	end
 end, false)
 

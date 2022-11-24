@@ -2,7 +2,7 @@ local lastSkin, cam, isCameraActive
 local firstSpawn, zoomOffset, camOffset, heading, skinLoaded = true, 0.0, 0.0, 90.0, false
 
 function OpenMenu(submitCb, cancelCb, restrict)
-    local playerPed = PlayerPedId()
+    local playerPed = LocalPlayer.state.info.ped
 
     TriggerEvent('skinchanger:getSkin', function(skin) lastSkin = skin end)
     TriggerEvent('skinchanger:getData', function(components, maxVals)
@@ -123,7 +123,7 @@ function CreateSkinCam()
         cam = CreateCam('DEFAULT_SCRIPTED_CAMERA', true)
     end
 
-    local playerPed = PlayerPedId()
+    local playerPed = LocalPlayer.state.info.ped
 
     SetCamActive(cam, true)
     RenderScriptCams(true, true, 500, true, true)
@@ -156,7 +156,7 @@ CreateThread(function()
             DisableControlAction(0, 25, true) -- Input Aim
             DisableControlAction(0, 24, true) -- Input Attack
 
-            local playerPed = PlayerPedId()
+            local playerPed = LocalPlayer.state.info.ped
             local coords    = GetEntityCoords(playerPed)
 
             local angle = heading * math.pi / 180.0

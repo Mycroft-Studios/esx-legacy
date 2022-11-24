@@ -13,7 +13,7 @@ local function Progressbar(message,length,Options)
                 TaskStartScenarioInPlace(LocalPlayer.state.info.ped, CurrentProgress.animation.Scenario, 0, true)
             end
         end
-        if CurrentProgress.FreezePlayer then FreezeEntityPosition(PlayerPedId(),CurrentProgress.FreezePlayer) end
+        if CurrentProgress.FreezePlayer then FreezeEntityPosition(LocalPlayer.state.info.ped,CurrentProgress.FreezePlayer) end
         SendNuiMessage(json.encode({
             type = "Progressbar",
             length = length or 3000,
@@ -25,7 +25,7 @@ local function Progressbar(message,length,Options)
                 CurrentProgress.length -= 1000
             else
                 ClearPedTasks(LocalPlayer.state.info.ped)
-                if CurrentProgress.FreezePlayer then FreezeEntityPosition(PlayerPedId(), false) end
+                if CurrentProgress.FreezePlayer then FreezeEntityPosition(LocalPlayer.state.info.ped, false) end
                 if CurrentProgress.onFinish then CurrentProgress.onFinish() end
                 CurrentProgress = nil
             end
@@ -41,7 +41,7 @@ ESX.RegisterInput("cancelprog", "[ProgressBar] Cancel Progressbar", "keyboard", 
         type = "Close"
     }))
         ClearPedTasks(LocalPlayer.state.info.ped)
-        if CurrentProgress.FreezePlayer then FreezeEntityPosition(PlayerPedId(), false) end
+        if CurrentProgress.FreezePlayer then FreezeEntityPosition(LocalPlayer.state.info.ped, false) end
         CurrentProgress.canceled = true
         CurrentProgress.length = 0
         CurrentProgress.onCancel()

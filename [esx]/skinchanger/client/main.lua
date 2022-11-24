@@ -9,7 +9,7 @@ for i = 1, #Components, 1 do
 end
 
 function LoadDefaultModel(malePed, cb)
-    local playerPed = PlayerPedId()
+    local playerPed = LocalPlayer.state.info.ped
     local characterModel
 
     if malePed then
@@ -42,7 +42,7 @@ function LoadDefaultModel(malePed, cb)
 end
 
 function GetMaxVals()
-    local playerPed = PlayerPedId()
+    local playerPed = LocalPlayer.state.info.ped
 
     local data = {
         sex = 1,
@@ -147,7 +147,7 @@ function GetMaxVals()
 end
 
 function ApplySkin(skin, clothes)
-    local playerPed = PlayerPedId()
+    local playerPed = LocalPlayer.state.info.ped
 
     for k, v in pairs(skin) do
         Character[k] = v
@@ -307,7 +307,7 @@ AddEventHandler('skinchanger:getSkin', function(cb)
 end)
 
 AddEventHandler('skinchanger:modelLoaded', function()
-    ClearPedProp(PlayerPedId(), 0)
+    ClearPedProp(LocalPlayer.state.info.ped, 0)
 
     if LoadSkin ~= nil then
         ApplySkin(LoadSkin)
