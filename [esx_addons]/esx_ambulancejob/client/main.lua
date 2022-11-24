@@ -16,7 +16,7 @@ end)
 AddEventHandler('esx:onPlayerSpawn', function()
   isDead = false
   ClearTimecycleModifier()
-  SetPedMotionBlur(PlayerPedId(), false)
+  SetPedMotionBlurLocalPlayer.state.info.ped, false)
   ClearExtraTimecycleModifier()
   EndDeathCam()
   if firstSpawn then
@@ -30,7 +30,7 @@ AddEventHandler('esx:onPlayerSpawn', function()
       ESX.TriggerServerCallback('esx_ambulancejob:getDeathStatus', function(shouldDie)
         if shouldDie then
           Wait(1000)
-          SetEntityHealth(PlayerPedId(), 0)
+          SetEntityHealthLocalPlayer.state.info.ped, 0)
         end
       end)
     end
@@ -106,7 +106,7 @@ function OnPlayerDeath()
   SetTimecycleModifierStrength(0.7)
   SetExtraTimecycleModifier("fp_vig_red")
   SetExtraTimecycleModifierStrength(1.0)
-  SetPedMotionBlur(PlayerPedId(), true)
+  SetPedMotionBlurLocalPlayer.state.info.ped, true)
   TriggerServerEvent('esx_ambulancejob:setDeathStatus', true)
   StartDeathTimer()
   StartDeathCam()
@@ -299,7 +299,7 @@ function StartDeathTimer()
 end
 
 function GetClosestRespawnPoint()
-  local PlyCoords = GetEntityCoords(PlayerPedId())
+  local PlyCoords = GetEntityCoordsLocalPlayer.state.info.ped)
   local ClosestDist, ClosestHospital, ClosestCoord = 10000, {}, nil
 
   for k, v in pairs(Config.RespawnPoints) do
@@ -324,7 +324,7 @@ function RemoveItemsAfterRPDeath()
       ESX.SetPlayerData('loadout', {})
 
       DoScreenFadeOut(800)
-      RespawnPed(PlayerPedId(), RespawnCoords, ClosestHospital.heading)
+      RespawnPedLocalPlayer.state.info.ped, RespawnCoords, ClosestHospital.heading)
       while not IsScreenFadedOut() do
         Wait(0)
       end
@@ -457,7 +457,7 @@ function ProcessNewPosition()
   elseif (angleY < -89.0) then
     angleY = -89.0
   end
-  local pCoords = GetEntityCoords(PlayerPedId())
+  local pCoords = GetEntityCoordsLocalPlayer.state.info.ped)
   local behindCam = {x = pCoords.x + ((Cos(angleZ) * Cos(angleY)) + (Cos(angleY) * Cos(angleZ))) / 2 * (5.5 + 0.5),
 
                      y = pCoords.y + ((Sin(angleZ) * Cos(angleY)) + (Cos(angleY) * Sin(angleZ))) / 2 * (5.5 + 0.5),

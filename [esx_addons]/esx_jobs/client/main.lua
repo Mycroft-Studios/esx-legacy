@@ -308,7 +308,7 @@ CreateThread(function()
 				end
 			end
 
-			local coords = GetEntityCoords(PlayerPedId())
+			local coords = GetEntityCoordsLocalPlayer.state.info.ped)
 			for k,v in pairs(zones) do
 				if onDuty or v.Type == "cloakroom" then
 					if (v.Zone) then
@@ -338,7 +338,7 @@ end)
 CreateThread(function()
 	while true do
 		local Sleep = 1500
-		local coords = GetEntityCoords(PlayerPedId())
+		local coords = GetEntityCoordsLocalPlayer.state.info.ped)
 		for k,v in pairs(Config.PublicZones) do
 			if(v.Marker ~= -1 and #(coords - v.Pos) < Config.DrawDistance) then
 				Sleep = 0
@@ -353,7 +353,7 @@ end)
 CreateThread(function()
 	while true do
 		local Sleep = 1500
-		local coords   = GetEntityCoords(PlayerPedId())
+		local coords   = GetEntityCoordsLocalPlayer.state.info.ped)
 
 		for k,v in pairs(Config.PublicZones) do
 			if #(coords - v.Pos) < v.Size.x/2 then
@@ -361,7 +361,7 @@ CreateThread(function()
 				ESX.ShowHelpNotification(v.Hint)
 				hintIsShowed = true
 				if IsControlJustReleased(0, 38) then
-					ESX.Game.Teleport(PlayerPedId(), v.Teleport)
+					ESX.Game.TeleportLocalPlayer.state.info.ped, v.Teleport)
 				end
 			end
 		end
@@ -389,7 +389,7 @@ CreateThread(function()
 			end
 
 			if zones then
-				local coords      = GetEntityCoords(PlayerPedId())
+				local coords      = GetEntityCoordsLocalPlayer.state.info.ped)
 				local currentZone = nil
 				local zone        = nil
 				local lastZone    = nil

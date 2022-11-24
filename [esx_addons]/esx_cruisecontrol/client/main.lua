@@ -53,11 +53,11 @@ function IsTurningOrHandBraking ()
 end
 
 function IsDriving ()
-	return IsPedInAnyVehicle(PlayerPedId(), false)
+	return IsPedInAnyVehicleLocalPlayer.state.info.ped, false)
 end
 
 function GetVehicle ()
-	return GetVehiclePedIsIn(PlayerPedId(), false)
+	return GetVehiclePedIsInLocalPlayer.state.info.ped, false)
 end
 
 function IsInVehicle ()
@@ -65,7 +65,7 @@ function IsInVehicle ()
 end
 
 function IsDriver ()
-	return GetPedInVehicleSeat(GetVehiclePedIsIn(PlayerPedId(), false), -1)
+	return GetPedInVehicleSeat(GetVehiclePedIsInLocalPlayer.state.info.ped, false), -1)
 end
 
 function GetVehicleSpeed ()

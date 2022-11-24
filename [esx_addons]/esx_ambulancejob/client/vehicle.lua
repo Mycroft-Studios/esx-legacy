@@ -1,7 +1,7 @@
 local spawnedVehicles = {}
 
 function OpenVehicleSpawnerMenu(type, hospital, part, partNum)
-	local playerCoords = GetEntityCoords(PlayerPedId())
+	local playerCoords = GetEntityCoordsLocalPlayer.state.info.ped)
 
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle', {
 		title    = TranslateCap('garage_title'),

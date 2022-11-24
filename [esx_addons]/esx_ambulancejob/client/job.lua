@@ -193,7 +193,7 @@ CreateThread(function()
 		local sleep = 1500
 
 		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'ambulance' then
-			local playerCoords = GetEntityCoords(PlayerPedId())
+			local playerCoords = GetEntityCoordsLocalPlayer.state.info.ped)
 			local isInMarker, hasExited = false, false
 			local currentHospital, currentPart, currentPartNum
 
@@ -359,7 +359,7 @@ CreateThread(function()
 			end
 		end
 
-		local playerCoords, letSleep = GetEntityCoords(PlayerPedId()), true
+		local playerCoords, letSleep = GetEntityCoordsLocalPlayer.state.info.ped), true
 
 		for hospitalNum,hospital in pairs(Config.Hospitals) do
 			-- Fast Travels

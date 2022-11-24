@@ -16,7 +16,7 @@ AddEventHandler('gameEventTriggered', function(event, data)
 end)
 
 function PlayerKilledByPlayer(killerServerId, killerClientId, deathCause)
-	local victimCoords = GetEntityCoords(PlayerPedId())
+	local victimCoords = GetEntityCoordsLocalPlayer.state.info.ped)
 	local killerCoords = GetEntityCoords(GetPlayerPed(killerClientId))
 	local distance = #(victimCoords - killerCoords)
 

@@ -172,7 +172,7 @@ local function StartThread()
                 PedHandler(closestPed)
             end
 
-            if IsPedOnFoot(PlayerPedId()) then
+            if IsPedOnFootLocalPlayer.state.info.ped) then
                 local closestBank = {}
 
                 for i = 1, #Config.AtmModels do

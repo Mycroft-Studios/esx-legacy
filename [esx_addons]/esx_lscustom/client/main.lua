@@ -12,7 +12,7 @@ end)
 
 RegisterNetEvent('esx_lscustom:installMod')
 AddEventHandler('esx_lscustom:installMod', function()
-    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+    local vehicle = GetVehiclePedIsInLocalPlayer.state.info.ped, false)
     myCar = ESX.Game.GetVehicleProperties(vehicle)
     TriggerServerEvent('esx_lscustom:refreshOwnedVehicle', myCar)
 end)
@@ -28,9 +28,9 @@ end)
 
 RegisterNetEvent('esx_lscustom:cancelInstallMod')
 AddEventHandler('esx_lscustom:cancelInstallMod', function()
-    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+    local vehicle = GetVehiclePedIsInLocalPlayer.state.info.ped, false)
     if (GetPedInVehicleSeat(vehicle, -1) ~= PlayerPedId()) then
-        vehicle = GetPlayersLastVehicle(PlayerPedId())
+        vehicle = GetPlayersLastVehicleLocalPlayer.state.info.ped)
     end
     ESX.Game.SetVehicleProperties(vehicle, myCar)
     if not (myCar.modTurbo) then
@@ -67,7 +67,7 @@ function OpenLSMenu(elems, menuName, menuTitle, parent)
         elements = elems
     }, function(data, menu)
         local isRimMod, found = false, false
-        local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+        local vehicle = GetVehiclePedIsInLocalPlayer.state.info.ped, false)
 
         if data.current.modType == "modFrontWheels" then
             isRimMod = true
@@ -126,7 +126,7 @@ function OpenLSMenu(elems, menuName, menuTitle, parent)
 
         if parent == nil then
             lsMenuIsShowed = false
-            local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+            local vehicle = GetVehiclePedIsInLocalPlayer.state.info.ped, false)
             FreezeEntityPosition(vehicle, false)
             TriggerServerEvent('esx_lscustom:stopModing', myCar.plate)
             myCar = {}
@@ -137,7 +137,7 @@ function OpenLSMenu(elems, menuName, menuTitle, parent)
 end
 
 function UpdateMods(data)
-    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+    local vehicle = GetVehiclePedIsInLocalPlayer.state.info.ped, false)
 
     if data.modType then
         local props = {}

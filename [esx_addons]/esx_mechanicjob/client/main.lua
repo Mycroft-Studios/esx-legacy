@@ -775,7 +775,7 @@ CreateThread(function()
 
 		if NPCTargetTowableZone and not NPCHasSpawnedTowable then
 			Sleep = 0
-			local coords = GetEntityCoords(PlayerPedId())
+			local coords = GetEntityCoordsLocalPlayer.state.info.ped)
 			local zone   = Config.Zones[NPCTargetTowableZone]
 
 			if #(coords - zone.Pos) < Config.NPCSpawnDistance then
@@ -791,7 +791,7 @@ CreateThread(function()
 
 		if NPCTargetTowableZone and NPCHasSpawnedTowable and not NPCHasBeenNextToTowable then
 			Sleep = 500
-			local coords = GetEntityCoords(PlayerPedId())
+			local coords = GetEntityCoordsLocalPlayer.state.info.ped)
 			local zone   = Config.Zones[NPCTargetTowableZone]
 
 			if #(coords - zone.Pos) < Config.NPCNextToDistance then
@@ -826,7 +826,7 @@ CreateThread(function()
 
 		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'mechanic' then
 			Sleep = 500
-			local coords, letSleep = GetEntityCoords(PlayerPedId()), true
+			local coords, letSleep = GetEntityCoordsLocalPlayer.state.info.ped), true
 
 			for k,v in pairs(Config.Zones) do
 				if v.Type ~= -1 and #(coords - v.Pos) < Config.DrawDistance then
@@ -847,7 +847,7 @@ CreateThread(function()
 
 		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'mechanic' then
 
-			local coords = GetEntityCoords(PlayerPedId())
+			local coords = GetEntityCoordsLocalPlayer.state.info.ped)
 			local isInMarker = false
 			local currentZone = nil
 

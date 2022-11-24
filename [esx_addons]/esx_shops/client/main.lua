@@ -97,7 +97,7 @@ CreateThread(function()
 			end
 		end
 
-		local playerCoords = GetEntityCoords(PlayerPedId())
+		local playerCoords = GetEntityCoordsLocalPlayer.state.info.ped)
 		local isInMarker, currentZone = false, nil
 
 		for k,v in pairs(Config.Zones) do

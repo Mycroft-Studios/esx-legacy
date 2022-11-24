@@ -5,7 +5,7 @@ local isPickingUp, isProcessing = false, false
 CreateThread(function()
 	while true do
 		Wait(700)
-		local coords = GetEntityCoords(PlayerPedId())
+		local coords = GetEntityCoordsLocalPlayer.state.info.ped)
 
 		if #(coords - Config.CircleZones.WeedField.coords) < 50 then
 			SpawnWeedPlants()

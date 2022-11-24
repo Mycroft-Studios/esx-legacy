@@ -157,7 +157,7 @@ local nearMarker = false
 CreateThread(function()
 	while true do
 		local sleep = 1500
-		local coords = GetEntityCoords(PlayerPedId())
+		local coords = GetEntityCoordsLocalPlayer.state.info.ped)
 		for k,v in pairs(Config.Zones) do
 			for i = 1, #v.Pos, 1 do
 				if(Config.Type ~= -1 and #(coords - v.Pos[i]) < Config.DrawDistance) then
@@ -177,7 +177,7 @@ CreateThread(function()
 		local sleep = 1500
 		if nearMarker then
 			sleep = 0
-			local coords = GetEntityCoords(PlayerPedId())
+			local coords = GetEntityCoordsLocalPlayer.state.info.ped)
 			local isInMarker = false
 			local currentZone = nil
 			for k,v in pairs(Config.Zones) do

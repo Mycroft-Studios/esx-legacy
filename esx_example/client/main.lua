@@ -42,31 +42,31 @@ end
 -----------------------------------------------
 
 RegisterCommand('closestobject', function()
-	local result = ESX.Game.GetClosestObject(GetEntityCoords(PlayerPedId()))
+	local result = ESX.Game.GetClosestObject(GetEntityCoordsLocalPlayer.state.info.ped))
 	print(result)
 end)
 
 RegisterCommand('closestped', function()
-	local result = ESX.Game.GetClosestPed(GetEntityCoords(PlayerPedId()))
+	local result = ESX.Game.GetClosestPed(GetEntityCoordsLocalPlayer.state.info.ped))
 	print(result)
 end)
 
 RegisterCommand('closestplayer', function()
-	local result = ESX.Game.GetClosestPlayer(GetEntityCoords(PlayerPedId()))
+	local result = ESX.Game.GetClosestPlayer(GetEntityCoordsLocalPlayer.state.info.ped))
 	print(result)
 end)
 
 RegisterCommand('closestvehicle', function()
-	local result = ESX.Game.GetClosestVehicle(GetEntityCoords(PlayerPedId()))
+	local result = ESX.Game.GetClosestVehicle(GetEntityCoordsLocalPlayer.state.info.ped))
 	print(result)
 end)
 
 RegisterCommand('areaplayer', function()
-	local result = ESX.Game.GetPlayersInArea(GetEntityCoords(PlayerPedId()), 20)
+	local result = ESX.Game.GetPlayersInArea(GetEntityCoordsLocalPlayer.state.info.ped), 20)
 	print(json.encode(result))
 end)
 
 RegisterCommand('areavehicle', function()
-	local result = ESX.Game.GetVehiclesInArea(GetEntityCoords(PlayerPedId()), 20)
+	local result = ESX.Game.GetVehiclesInArea(GetEntityCoordsLocalPlayer.state.info.ped), 20)
 	print(json.encode(result))
 end)
