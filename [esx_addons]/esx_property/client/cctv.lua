@@ -18,7 +18,7 @@
 function CCTV(PropertyID)
   DoScreenFadeOut(500)
   Wait(500)
-  local PlyCoordsBefore = GetEntityCoordsLocalPlayer.state.info.ped)
+  local PlyCoordsBefore = GetEntityCoords(PlayerPedId())
   local Property = Properties[PropertyID]
   local CamTakePic = true
   if Property.cctv.enabled then

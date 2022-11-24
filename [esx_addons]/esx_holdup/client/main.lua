@@ -81,7 +81,7 @@ end)
 CreateThread(function()
 	while true do
 		Wait(0)
-		local playerPos, letSleep = GetEntityCoordsLocalPlayer.state.info.ped), true
+		local playerPos, letSleep = GetEntityCoords(PlayerPedId()), true
 		for k,v in pairs(Stores) do
 			local distance = #(playerPos - v.position)
 			if distance < Config.Marker.DrawDistance then
@@ -91,7 +91,7 @@ CreateThread(function()
 					if distance < 2.0 then
 						ESX.ShowHelpNotification(TranslateCap('press_to_rob', v.nameOfStore))
 						if IsControlJustReleased(0, 38) then
-							if IsPedArmedLocalPlayer.state.info.ped, 4) then
+							if IsPedArmed(PlayerPedId(), 4) then
 								TriggerServerEvent('esx_holdup:robberyStarted', k)
 							else
 								ESX.ShowNotification(TranslateCap('no_threat'))

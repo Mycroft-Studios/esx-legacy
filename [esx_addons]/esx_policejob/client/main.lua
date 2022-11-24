@@ -188,7 +188,7 @@ function OpenCloakroomMenu()
 				ESX.Streaming.RequestModel(modelHash, function()
 					SetPlayerModel(PlayerId(), modelHash)
 					SetModelAsNoLongerNeeded(modelHash)
-					SetPedDefaultComponentVariationLocalPlayer.state.info.ped)
+					SetPedDefaultComponentVariation(PlayerPedId())
 
 					TriggerEvent('esx:restoreLoadout')
 				end)

@@ -463,7 +463,7 @@ CreateThread(function()
         local sleep = 1500
         if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'taxi' then
 
-            local coords = GetEntityCoordsLocalPlayer.state.info.ped)
+            local coords = GetEntityCoords(PlayerPedId())
             local isInMarker, currentZone = false
 
             for k, v in pairs(Config.Zones) do

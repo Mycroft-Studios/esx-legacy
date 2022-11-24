@@ -79,7 +79,7 @@ RegisterKeyMapping('sit', 'Sit', 'keyboard', 'e')
 
 function GetNearChair()
 	local object, distance
-	local coords = GetEntityCoordsLocalPlayer.state.info.ped)
+	local coords = GetEntityCoords(PlayerPedId())
 	for i=1, #Config.Interactables do
 		object = GetClosestObjectOfType(coords, 3.0, joaat(Config.Interactables[i]), false, false, false)
 		distance = #(coords - GetEntityCoords(object))
@@ -92,10 +92,10 @@ end
 
 function wakeup()
 	local playerPed = PlayerPedId()
-	local pos = GetEntityCoordsLocalPlayer.state.info.ped)
+	local pos = GetEntityCoords(PlayerPedId())
 
 	TaskStartScenarioAtPosition(playerPed, currentScenario, 0.0, 0.0, 0.0, 180.0, 2, true, false)
-	while IsPedUsingScenarioLocalPlayer.state.info.ped, currentScenario) do
+	while IsPedUsingScenario(PlayerPedId(), currentScenario) do
 		Wait(100)
 	end
 	ClearPedTasks(playerPed)
@@ -111,7 +111,7 @@ end
 
 function sit(object, modelName, data)
 	-- Fix for sit on chairs behind walls
-	if not HasEntityClearLosToEntityLocalPlayer.state.info.ped, object, 17) then
+	if not HasEntityClearLosToEntity(PlayerPedId(), object, 17) then
 		return
 	end
 	disableControls = true
@@ -120,7 +120,7 @@ function sit(object, modelName, data)
 
 	PlaceObjectOnGroundProperly(object)
 	local pos = GetEntityCoords(object)
-	local playerPos = GetEntityCoordsLocalPlayer.state.info.ped)
+	local playerPos = GetEntityCoords(PlayerPedId())
 	local objectCoords = pos.x .. pos.y .. pos.z
 
 	ESX.TriggerServerCallback('esx_sit:getPlace', function(occupied)
@@ -136,8 +136,8 @@ function sit(object, modelName, data)
 			TaskStartScenarioAtPosition(playerPed, currentScenario, pos.x, pos.y, pos.z + (playerPos.z - pos.z)/2, GetEntityHeading(object) + 180.0, 0, true, false)
 
 			Wait(2500)
-			if GetEntitySpeedLocalPlayer.state.info.ped) > 0 then
-				ClearPedTasksLocalPlayer.state.info.ped)
+			if GetEntitySpeed(PlayerPedId()) > 0 then
+				ClearPedTasks(PlayerPedId())
 				TaskStartScenarioAtPosition(playerPed, currentScenario, pos.x, pos.y, pos.z + (playerPos.z - pos.z)/2, GetEntityHeading(object) + 180.0, 0, true, true)
 			end
 

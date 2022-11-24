@@ -177,7 +177,7 @@ CreateThread(function()
 		Wait(0)
 
 		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'banker' then
-			local playerCoords = GetEntityCoordsLocalPlayer.state.info.ped)
+			local playerCoords = GetEntityCoords(PlayerPedId())
 			local isInMarker, letSleep, currentZone = false, true
 
 			for k,v in pairs(Config.Zones) do

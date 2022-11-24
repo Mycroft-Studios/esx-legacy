@@ -755,7 +755,7 @@ end)
 CreateThread(function()
 	while true do
 		Wait(0)
-		local playerCoords = GetEntityCoordsLocalPlayer.state.info.ped)
+		local playerCoords = GetEntityCoords(PlayerPedId())
 		local isInMarker, letSleep, currentZone = false, true
 
 		for k,v in pairs(Config.Zones) do
