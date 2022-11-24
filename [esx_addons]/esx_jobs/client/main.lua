@@ -12,18 +12,18 @@ local vehicleInCaseofDrop = nil
 local vehicleMaxHealth = nil
 
 RegisterNetEvent('esx:playerLoaded', function(xPlayer)
-	ESX.PlayerData = xPlayer
+	LocalPlayer.state.info = xPlayer
 	ESX.PlayerLoaded = true
 	refreshBlips()
 end)
 
 RegisterNetEvent('esx:onPlayerLogout',function()
 	ESX.PlayerLoaded = false
-	ESX.PlayerData = {}
+	LocalPlayer.state.info = {}
 end)
 
 RegisterNetEvent('esx:setJob',function(job)
-	ESX.PlayerData.job = job
+	LocalPlayer.state.info.job = job
 end)
 
 function OpenMenu()
@@ -92,7 +92,7 @@ AddEventHandler('esx_jobs:action', function(job, zone, zoneKey)
 		local vehicle = nil
 
 		for k,v in pairs(Config.Jobs) do
-			if ESX.PlayerData.job.name == k then
+			if LocalPlayer.state.info.job.name == k then
 				for l,w in pairs(v.Zones) do
 					if w.Type == "vehspawnpt" and w.Spawner == zone.Spawner then
 						spawnPoint = w
@@ -118,7 +118,7 @@ AddEventHandler('esx_jobs:action', function(job, zone, zoneKey)
 		local looping = true
 
 		for k,v in pairs(Config.Jobs) do
-			if ESX.PlayerData.job.name == k then
+			if LocalPlayer.state.info.job.name == k then
 				for l,w in pairs(v.Zones) do
 					if w.Type == "vehdelete" and w.Spawner == zone.Spawner then
 						local playerPed = PlayerPedId()
@@ -227,9 +227,9 @@ function refreshBlips()
 	local zones = {}
 	local blipInfo = {}
 
-	if ESX.PlayerData.job ~= nil then
+	if LocalPlayer.state.info.job ~= nil then
 		for jobKey,jobValues in pairs(Config.Jobs) do
-			if jobKey == ESX.PlayerData.job.name then
+			if jobKey == LocalPlayer.state.info.job.name then
 				for zoneKey,zoneValues in pairs(jobValues.Zones) do
 
 					if zoneValues.Blip then
@@ -300,9 +300,9 @@ CreateThread(function()
 		local Sleep = 1500
 		local zones = {}
 		
-		if ESX.PlayerData.job then
+		if LocalPlayer.state.info.job then
 			for k,v in pairs(Config.Jobs) do
-				if ESX.PlayerData.job.name == k then
+				if LocalPlayer.state.info.job.name == k then
 					Sleep = 0
 					zones = v.Zones
 				end
@@ -376,12 +376,12 @@ CreateThread(function()
 
 		local Sleep = 500
 
-		if ESX.PlayerData.job and ESX.PlayerData.job.name ~= 'unemployed' then
+		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name ~= 'unemployed' then
 			local zones = nil
 			local job = nil
 
 			for k,v in pairs(Config.Jobs) do
-				if ESX.PlayerData.job.name == k then
+				if LocalPlayer.state.info.job.name == k then
 					Sleep = 0
 					job = v
 					zones = v.Zones

@@ -25,10 +25,10 @@ AddEventHandler("onResourceStart", getVehicles)
 
 function PlayerManagement()
 	if Config.EnablePlayerManagement then
-		if ESX.PlayerData.job.name == 'cardealer' then
+		if LocalPlayer.state.info.job.name == 'cardealer' then
 			Config.Zones.ShopEntering.Type = 1
 
-			if ESX.PlayerData.job.grade_name == 'boss' then
+			if LocalPlayer.state.info.job.grade_name == 'boss' then
 				Config.Zones.BossActions.Type = 1
 			end
 
@@ -42,7 +42,7 @@ end
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-	ESX.PlayerData = xPlayer
+	LocalPlayer.state.info = xPlayer
 
 	PlayerManagement()
 	getVehicles()
@@ -634,7 +634,7 @@ AddEventHandler('esx_vehicleshop:hasEnteredMarker', function(zone)
 	if zone == 'ShopEntering' then
 
 		if Config.EnablePlayerManagement then
-			if ESX.PlayerData.job ~= nil and ESX.PlayerData.job.name == 'cardealer' then
+			if LocalPlayer.state.info.job ~= nil and LocalPlayer.state.info.job.name == 'cardealer' then
 				CurrentAction     = 'reseller_menu'
 				CurrentActionMsg  = TranslateCap('shop_menu')
 				CurrentActionData = {}
@@ -691,7 +691,7 @@ AddEventHandler('esx_vehicleshop:hasEnteredMarker', function(zone)
 			end
 		end
 
-	elseif zone == 'BossActions' and Config.EnablePlayerManagement and ESX.PlayerData.job ~= nil and ESX.PlayerData.job.name == 'cardealer' and ESX.PlayerData.job.grade_name == 'boss' then
+	elseif zone == 'BossActions' and Config.EnablePlayerManagement and LocalPlayer.state.info.job ~= nil and LocalPlayer.state.info.job.name == 'cardealer' and LocalPlayer.state.info.job.grade_name == 'boss' then
 		CurrentAction     = 'boss_actions_menu'
 		CurrentActionMsg  = TranslateCap('shop_menu')
 		CurrentActionData = {}

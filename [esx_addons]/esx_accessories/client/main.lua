@@ -225,7 +225,7 @@ end)
 
 if Config.EnableControls then
 	RegisterCommand("accessory", function(src)
-		if not ESX.PlayerData.dead then
+		if not LocalPlayer.state.info.dead then
 			OpenAccessoryMenu()
 		end
 	end)

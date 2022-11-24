@@ -38,7 +38,7 @@ function ESX.IsPlayerLoaded()
 end
 
 function ESX.GetPlayerData()
-    return ESX.PlayerData
+    return LocalPlayer.state.info
 end
 
 function ESX.SearchInventory(items, count)
@@ -53,7 +53,7 @@ function ESX.SearchInventory(items, count)
         local itemName = items[i]
         returnData[itemName] = count and 0
 
-        for _, item in pairs(ESX.PlayerData.inventory) do
+        for _, item in pairs(LocalPlayer.state.info.inventory) do
             if item.name == itemName then
                 if count then
                     returnData[itemName] = returnData[itemName] + item.count
@@ -70,8 +70,8 @@ function ESX.SearchInventory(items, count)
 end
 
 function ESX.SetPlayerData(key, val)
-    local current = ESX.PlayerData[key]
-    ESX.PlayerData[key] = val
+    local current = LocalPlayer.state.info[key]
+    LocalPlayer.state.info[key] = val
     if key ~= 'inventory' and key ~= 'loadout' then
         if type(val) == 'table' or val ~= current then
             TriggerEvent('esx:setPlayerData', key, val, current)
@@ -536,7 +536,7 @@ function ESX.Game.GetObjects() -- Leave the function for compatibility
 end
 
 function ESX.Game.GetPeds(onlyOtherPeds)
-    local peds, myPed, pool = {}, ESX.PlayerData.ped, GetGamePool('CPed')
+    local peds, myPed, pool = {}, LocalPlayer.state.info.ped, GetGamePool('CPed')
 
     for i = 1, #pool do
         if ((onlyOtherPeds and pool[i] ~= myPed) or not onlyOtherPeds) then
@@ -592,7 +592,7 @@ local function EnumerateEntitiesWithinDistance(entities, isPlayerEntities, coord
     if coords then
         coords = vector3(coords.x, coords.y, coords.z)
     else
-        local playerPed = ESX.PlayerData.ped
+        local playerPed = LocalPlayer.state.info.ped
         coords = GetEntityCoords(playerPed)
     end
 
@@ -625,7 +625,7 @@ function ESX.Game.GetClosestEntity(entities, isPlayerEntities, coords, modelFilt
     if coords then
         coords = vector3(coords.x, coords.y, coords.z)
     else
-        local playerPed = ESX.PlayerData.ped
+        local playerPed = LocalPlayer.state.info.ped
         coords = GetEntityCoords(playerPed)
     end
 
@@ -651,7 +651,7 @@ function ESX.Game.GetClosestEntity(entities, isPlayerEntities, coords, modelFilt
 end
 
 function ESX.Game.GetVehicleInDirection()
-    local playerPed = ESX.PlayerData.ped
+    local playerPed = LocalPlayer.state.info.ped
     local playerCoords = GetEntityCoords(playerPed)
     local inDirection = GetOffsetFromEntityInWorldCoords(playerPed, 0.0, 5.0, 0.0)
     local rayHandle = StartExpensiveSynchronousShapeTestLosProbe(playerCoords, inDirection, 10, playerPed, 0)
@@ -1104,19 +1104,19 @@ function ESX.Game.Utils.DrawText3D(coords, text, size, font)
 end
 
 function ESX.ShowInventory()
-    local playerPed = ESX.PlayerData.ped
+    local playerPed = LocalPlayer.state.info.ped
     local elements, currentWeight = {}, 0
 
-    for i=1, #(ESX.PlayerData.accounts) do
-        if ESX.PlayerData.accounts[i].money > 0 then
-            local formattedMoney = TranslateCap('locale_currency', ESX.Math.GroupDigits(ESX.PlayerData.accounts[i].money))
-            local canDrop = ESX.PlayerData.accounts[i].name ~= 'bank'
+    for i=1, #(LocalPlayer.state.info.accounts) do
+        if LocalPlayer.state.info.accounts[i].money > 0 then
+            local formattedMoney = TranslateCap('locale_currency', ESX.Math.GroupDigits(LocalPlayer.state.info.accounts[i].money))
+            local canDrop = LocalPlayer.state.info.accounts[i].name ~= 'bank'
 
             table.insert(elements, {
-                label = ('%s: <span style="color:green;">%s</span>'):format(ESX.PlayerData.accounts[i].label, formattedMoney),
-                count = ESX.PlayerData.accounts[i].money,
+                label = ('%s: <span style="color:green;">%s</span>'):format(LocalPlayer.state.info.accounts[i].label, formattedMoney),
+                count = LocalPlayer.state.info.accounts[i].money,
                 type = 'item_account',
-                value = ESX.PlayerData.accounts[i].name,
+                value = LocalPlayer.state.info.accounts[i].name,
                 usable = false,
                 rare = false,
                 canRemove = canDrop
@@ -1124,7 +1124,7 @@ function ESX.ShowInventory()
         end
     end
 
-    for k, v in ipairs(ESX.PlayerData.inventory) do
+    for k, v in ipairs(LocalPlayer.state.info.inventory) do
         if v.count > 0 then
             currentWeight = currentWeight + (v.weight * v.count)
 
@@ -1169,7 +1169,7 @@ function ESX.ShowInventory()
     ESX.UI.Menu.CloseAll()
 
     ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'inventory', {
-        title = TranslateCap('inventory', currentWeight, ESX.PlayerData.maxWeight),
+        title = TranslateCap('inventory', currentWeight, LocalPlayer.state.info.maxWeight),
         align = 'bottom-right',
         elements = elements
     }, function(data, menu)

@@ -4,7 +4,7 @@ local lsMenuIsShowed, HintDisplayed, isInLSMarker = false, false, false
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
     ESX.PlayerLoaded = true
-	ESX.PlayerData = xPlayer
+	LocalPlayer.state.info = xPlayer
     ESX.TriggerServerCallback('esx_lscustom:getVehiclesPrices', function(vehicles)
         Vehicles = vehicles
     end)
@@ -502,7 +502,7 @@ CreateThread(function()
             local coords = GetEntityCoords(playerPed)
             local currentZone, zone, lastZone
 
-            if (ESX.PlayerData.job and ESX.PlayerData.job.name == 'mechanic') or not Config.IsMechanicJobOnly then
+            if (LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'mechanic') or not Config.IsMechanicJobOnly then
                 for k, v in pairs(Config.Zones) do
                     local zonePos = vector3(v.Pos.x, v.Pos.y, v.Pos.z)
                     if #(coords - zonePos) < 10.0 then

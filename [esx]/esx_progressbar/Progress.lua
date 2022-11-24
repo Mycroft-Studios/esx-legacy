@@ -6,11 +6,11 @@ local function Progressbar(message,length,Options)
         if CurrentProgress.animation then 
             if CurrentProgress.animation.type == "anim" then
                 ESX.Streaming.RequestAnimDict(CurrentProgress.animation.dict, function()
-                    TaskPlayAnim(ESX.PlayerData.ped, CurrentProgress.animation.dict, CurrentProgress.animation.lib, 1.0, 1.0, length, 1, 1.0, false,false,false)
+                    TaskPlayAnim(LocalPlayer.state.info.ped, CurrentProgress.animation.dict, CurrentProgress.animation.lib, 1.0, 1.0, length, 1, 1.0, false,false,false)
                     RemoveAnimDict(CurrentProgress.animation.dict)
                 end)
             elseif CurrentProgress.animation.type == "Scenario" then
-                TaskStartScenarioInPlace(ESX.PlayerData.ped, CurrentProgress.animation.Scenario, 0, true)
+                TaskStartScenarioInPlace(LocalPlayer.state.info.ped, CurrentProgress.animation.Scenario, 0, true)
             end
         end
         if CurrentProgress.FreezePlayer then FreezeEntityPosition(PlayerPedId(),CurrentProgress.FreezePlayer) end
@@ -24,7 +24,7 @@ local function Progressbar(message,length,Options)
             if CurrentProgress.length > 0 then 
                 CurrentProgress.length -= 1000
             else
-                ClearPedTasks(ESX.PlayerData.ped)
+                ClearPedTasks(LocalPlayer.state.info.ped)
                 if CurrentProgress.FreezePlayer then FreezeEntityPosition(PlayerPedId(), false) end
                 if CurrentProgress.onFinish then CurrentProgress.onFinish() end
                 CurrentProgress = nil
@@ -40,7 +40,7 @@ ESX.RegisterInput("cancelprog", "[ProgressBar] Cancel Progressbar", "keyboard", 
     SendNuiMessage(json.encode({
         type = "Close"
     }))
-        ClearPedTasks(ESX.PlayerData.ped)
+        ClearPedTasks(LocalPlayer.state.info.ped)
         if CurrentProgress.FreezePlayer then FreezeEntityPosition(PlayerPedId(), false) end
         CurrentProgress.canceled = true
         CurrentProgress.length = 0

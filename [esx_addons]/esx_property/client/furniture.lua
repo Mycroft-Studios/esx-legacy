@@ -142,7 +142,7 @@ if Config.Furniture.Enabled then
 
       return vector3(-math.sin(rotation.z), math.cos(rotation.z), math.sin(rotation.x))
     end
-    local Position = GetEntityCoords(ESX.PlayerData.ped)
+    local Position = GetEntityCoords(LocalPlayer.state.info.ped)
     local PropSpawn = Position - vector3(0.5, 0.5, 1.0)
     ESX.Game.SpawnLocalObject(PropName, PropSpawn, function(CurrentlyEditing)
       CurrentlyEditing = CurrentlyEditing

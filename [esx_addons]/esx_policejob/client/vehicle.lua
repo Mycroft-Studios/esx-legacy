@@ -15,7 +15,7 @@ function OpenVehicleSpawnerMenu(type, station, part, partNum)
 		if data.current.action == 'buy_vehicle' then
 			local shopElements = {}
 			local shopCoords = Config.PoliceStations[station][part][partNum].InsideShop
-			local authorizedVehicles = Config.AuthorizedVehicles[type][ESX.PlayerData.job.grade_name]
+			local authorizedVehicles = Config.AuthorizedVehicles[type][LocalPlayer.state.info.job.grade_name]
 
 			if authorizedVehicles then
 				if #authorizedVehicles > 0 then

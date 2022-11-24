@@ -2,13 +2,13 @@ local base64MoneyIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaC
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-	ESX.PlayerData.job = job
+	LocalPlayer.state.info.job = job
 	RefreshBussHUD()
 end)
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-	ESX.PlayerData = xPlayer
+	LocalPlayer.state.info = xPlayer
 	ESX.PlayerLoaded = true
 	RefreshBussHUD()
 end)
@@ -16,18 +16,18 @@ end)
 function RefreshBussHUD()
 	DisableSocietyMoneyHUDElement()
 
-	if ESX.PlayerData.job.grade_name == 'boss' then
+	if LocalPlayer.state.info.job.grade_name == 'boss' then
 		EnableSocietyMoneyHUDElement()
 
 		ESX.TriggerServerCallback('esx_society:getSocietyMoney', function(money)
 			UpdateSocietyMoneyHUDElement(money)
-		end, ESX.PlayerData.job.name)
+		end, LocalPlayer.state.info.job.name)
 	end
 end
 
 RegisterNetEvent('esx_addonaccount:setMoney')
 AddEventHandler('esx_addonaccount:setMoney', function(society, money)
-	if ESX.PlayerData.job and ESX.PlayerData.job.grade_name == 'boss' and 'society_' .. ESX.PlayerData.job.name == society then
+	if LocalPlayer.state.info.job and LocalPlayer.state.info.job.grade_name == 'boss' and 'society_' .. LocalPlayer.state.info.job.name == society then
 		UpdateSocietyMoneyHUDElement(money)
 	end
 end)

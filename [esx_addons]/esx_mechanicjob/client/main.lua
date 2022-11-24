@@ -61,7 +61,7 @@ function OpenMechanicActionsMenu()
 		{label = TranslateCap('withdraw_stock'), value = 'get_stock'}
 	}
 
-	if Config.EnablePlayerManagement and ESX.PlayerData.job and ESX.PlayerData.job.grade_name == 'boss' then
+	if Config.EnablePlayerManagement and LocalPlayer.state.info.job and LocalPlayer.state.info.job.grade_name == 'boss' then
 		table.insert(elements, {label = TranslateCap('boss_actions'), value = 'boss_actions'})
 	end
 
@@ -112,7 +112,7 @@ function OpenMechanicActionsMenu()
 					{label = TranslateCap('tow_truck'), value = 'towtruck2'}
 				}
 
-				if Config.EnablePlayerManagement and ESX.PlayerData.job and (ESX.PlayerData.job.grade_name == 'boss' or ESX.PlayerData.job.grade_name == 'chief' or ESX.PlayerData.job.grade_name == 'experimente') then
+				if Config.EnablePlayerManagement and LocalPlayer.state.info.job and (LocalPlayer.state.info.job.grade_name == 'boss' or LocalPlayer.state.info.job.grade_name == 'chief' or LocalPlayer.state.info.job.grade_name == 'experimente') then
 					table.insert(elements, {label = 'SlamVan', value = 'slamvan3'})
 				end
 
@@ -185,7 +185,7 @@ function OpenMechanicActionsMenu()
 end
 
 function OpenMechanicHarvestMenu()
-	if Config.EnablePlayerManagement and ESX.PlayerData.job and ESX.PlayerData.job.grade_name ~= 'recrue' then
+	if Config.EnablePlayerManagement and LocalPlayer.state.info.job and LocalPlayer.state.info.job.grade_name ~= 'recrue' then
 		local elements = {
 			{label = TranslateCap('gas_can'), value = 'gaz_bottle'},
 			{label = TranslateCap('repair_tools'), value = 'fix_tool'},
@@ -220,7 +220,7 @@ function OpenMechanicHarvestMenu()
 end
 
 function OpenMechanicCraftMenu()
-	if Config.EnablePlayerManagement and ESX.PlayerData.job and ESX.PlayerData.job.grade_name ~= 'recrue' then
+	if Config.EnablePlayerManagement and LocalPlayer.state.info.job and LocalPlayer.state.info.job.grade_name ~= 'recrue' then
 		local elements = {
 			{label = TranslateCap('blowtorch'),  value = 'blow_pipe'},
 			{label = TranslateCap('repair_kit'), value = 'fix_kit'},
@@ -685,13 +685,13 @@ end)
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-	ESX.PlayerData = xPlayer
+	LocalPlayer.state.info = xPlayer
 	ESX.PlayerLoaded = true
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-	ESX.PlayerData.job = job
+	LocalPlayer.state.info.job = job
 end)
 
 AddEventHandler('esx_mechanicjob:hasEnteredMarker', function(zone)
@@ -744,7 +744,7 @@ end)
 AddEventHandler('esx_mechanicjob:hasEnteredEntityZone', function(entity)
 	local playerPed = PlayerPedId()
 
-	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'mechanic' and not IsPedInAnyVehicle(playerPed, false) then
+	if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'mechanic' and not IsPedInAnyVehicle(playerPed, false) then
 		CurrentAction     = 'remove_entity'
 		CurrentActionMsg  = TranslateCap('press_remove_obj')
 		CurrentActionData = {entity = entity}
@@ -824,7 +824,7 @@ CreateThread(function()
 	while true do
 		local Sleep = 2000
 
-		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'mechanic' then
+		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'mechanic' then
 			Sleep = 500
 			local coords, letSleep = GetEntityCoords(PlayerPedId()), true
 
@@ -845,7 +845,7 @@ CreateThread(function()
 	while true do
 		local Sleep = 500
 
-		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'mechanic' then
+		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'mechanic' then
 
 			local coords = GetEntityCoords(PlayerPedId())
 			local isInMarker = false
@@ -925,7 +925,7 @@ CreateThread(function()
 			sleep = 0
 			ESX.ShowHelpNotification(CurrentActionMsg)
 
-			if IsControlJustReleased(0, 38) and ESX.PlayerData.job and ESX.PlayerData.job.name == 'mechanic' then
+			if IsControlJustReleased(0, 38) and LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'mechanic' then
 				if CurrentAction == 'mechanic_actions_menu' then
 					OpenMechanicActionsMenu()
 				elseif CurrentAction == 'mechanic_harvest_menu' then
@@ -956,7 +956,7 @@ CreateThread(function()
 	end
 end)
 RegisterCommand('mechanicMenu', function()
-		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'mechanic' then
+		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'mechanic' then
 			OpenMobileMechanicActionsMenu()
 		end
 end, false)
@@ -965,7 +965,7 @@ end, false)
 
 RegisterCommand('mechanicjob', function()
 	local playerPed = PlayerPedId()
-		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'mechanic' then
+		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'mechanic' then
 			if NPCOnJob then
 				if GetGameTimer() - NPCLastCancel > 5 * 60000 then
 					StopNPCJob(true)

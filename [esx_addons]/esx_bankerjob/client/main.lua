@@ -2,12 +2,12 @@ local CurrentActionData, CurrentAction, CurrentActionMsg, hasAlreadyEnteredMarke
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function (xPlayer)
-	ESX.PlayerData = xPlayer
+	LocalPlayer.state.info = xPlayer
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function (job)
-	ESX.PlayerData.job = job
+	LocalPlayer.state.info.job = job
 end)
 
 function OpenBankActionsMenu()
@@ -17,7 +17,7 @@ function OpenBankActionsMenu()
 		{icon = "fas fa-scroll", title = TranslateCap("billing"),   value = "billing"}
 	}
 
-	if ESX.PlayerData.job.grade_name == 'boss' then
+	if LocalPlayer.state.info.job.grade_name == 'boss' then
 		elements[#elements+1] = {
 			icon = "fas fa-wallet",
 			title = TranslateCap("boss_actions"),
@@ -146,7 +146,7 @@ function CreateBillingDialog()
 end
 
 AddEventHandler('esx_bankerjob:hasEnteredMarker', function (zone)
-	if zone == 'BankActions' and ESX.PlayerData.job and ESX.PlayerData.job.name == 'banker' then
+	if zone == 'BankActions' and LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'banker' then
 		CurrentAction     = 'bank_actions_menu'
 		CurrentActionMsg  = TranslateCap('press_input_context_to_open_menu')
 		CurrentActionData = {}
@@ -176,7 +176,7 @@ CreateThread(function()
 	while true do
 		Wait(0)
 
-		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'banker' then
+		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'banker' then
 			local playerCoords = GetEntityCoords(PlayerPedId())
 			local isInMarker, letSleep, currentZone = false, true
 
@@ -220,7 +220,7 @@ CreateThread(function()
 		if CurrentAction then
 			ESX.ShowHelpNotification(CurrentActionMsg)
 
-			if IsControlJustReleased(0, 38) and ESX.PlayerData.job and ESX.PlayerData.job.name == 'banker' then
+			if IsControlJustReleased(0, 38) and LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'banker' then
 				if CurrentAction == 'bank_actions_menu' then
 					OpenBankActionsMenu()
 				end

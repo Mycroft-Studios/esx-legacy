@@ -6,12 +6,12 @@
 ```lua
 	AddEventHandler('esx:setPlayerData', function(key, val)
 		if GetInvokingResource() == 'es_extended' then
-			ESX.PlayerData[key] = val
+			LocalPlayer.state.info[key] = val
 			if OnPlayerData ~= nil then OnPlayerData(key, val) end
 		end
 	end)
   ```
-- You will now receive updated ESX.PlayerData values whenever they change
+- You will now receive updated LocalPlayer.state.info values whenever they change
   - This does not include inventory or loadout data and it should still be retrieved with `ESX.GetPlayerData()`
   - You can add your own functions to the import if you believe they will be useful in your resources
   - You can trigger certain events or functions based on the key and value received (example in client.lua)

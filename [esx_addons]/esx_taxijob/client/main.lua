@@ -4,19 +4,19 @@ local CurrentCustomer, CurrentCustomerBlip, DestinationBlip, targetCoords, LastZ
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-    ESX.PlayerData = xPlayer
+    LocalPlayer.state.info = xPlayer
     ESX.PlayerLoaded = true
 end)
 
 RegisterNetEvent('esx:onPlayerLogout')
 AddEventHandler('esx:onPlayerLogout', function()
     ESX.PlayerLoaded = false
-    ESX.PlayerData = {}
+    LocalPlayer.state.info = {}
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-    ESX.PlayerData.job = job
+    LocalPlayer.state.info.job = job
 end)
 
 function DrawSub(msg, time)
@@ -201,7 +201,7 @@ function OpenTaxiActionsMenu()
         {icon = "fas fa-box", title = TranslateCap('take_stock'), value = 'get_stock'}
     }
 
-    if Config.EnablePlayerManagement and ESX.PlayerData.job ~= nil and ESX.PlayerData.job.grade_name == 'boss' then
+    if Config.EnablePlayerManagement and LocalPlayer.state.info.job ~= nil and LocalPlayer.state.info.job.grade_name == 'boss' then
         elements[#elements+1] = {
             icon = "fas fa-wallet",
             title = TranslateCap('boss_actions'),
@@ -264,12 +264,12 @@ function OpenMobileTaxiActionsMenu()
                 ESX.CloseContext()
                 StopTaxiJob()
             else
-                if ESX.PlayerData.job ~= nil and ESX.PlayerData.job.name == 'taxi' then
+                if LocalPlayer.state.info.job ~= nil and LocalPlayer.state.info.job.name == 'taxi' then
                     local playerPed = PlayerPedId()
                     local vehicle = GetVehiclePedIsIn(playerPed, false)
 
                     if IsPedInAnyVehicle(playerPed, false) and GetPedInVehicleSeat(vehicle, -1) == playerPed then
-                        if tonumber(ESX.PlayerData.job.grade) >= 3 then
+                        if tonumber(LocalPlayer.state.info.job.grade) >= 3 then
                             ESX.CloseContext()
                             StartTaxiJob()
                         else
@@ -281,7 +281,7 @@ function OpenMobileTaxiActionsMenu()
                             end
                         end
                     else
-                        if tonumber(ESX.PlayerData.job.grade) >= 3 then
+                        if tonumber(LocalPlayer.state.info.job.grade) >= 3 then
                             ESX.ShowNotification(TranslateCap('must_in_vehicle'))
                         else
                             ESX.ShowNotification(TranslateCap('must_in_taxi'))
@@ -461,7 +461,7 @@ end)
 CreateThread(function()
     while true do
         local sleep = 1500
-        if ESX.PlayerData.job and ESX.PlayerData.job.name == 'taxi' then
+        if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'taxi' then
 
             local coords = GetEntityCoords(PlayerPedId())
             local isInMarker, currentZone = false
@@ -664,7 +664,7 @@ end)
 CreateThread(function()
     while OnJob do
         Wait(10000)
-        if ESX.PlayerData.job ~= nil and ESX.PlayerData.job.grade < 3 then
+        if LocalPlayer.state.info.job ~= nil and LocalPlayer.state.info.job.grade < 3 then
             if not IsInAuthorizedVehicle() then
                 ClearCurrentMission()
                 OnJob = false
@@ -678,11 +678,11 @@ end)
 CreateThread(function()
     while true do
         local sleep = 1500
-        if CurrentAction and not ESX.PlayerData.dead then
+        if CurrentAction and not LocalPlayer.state.info.dead then
             sleep = 0
             ESX.ShowHelpNotification(CurrentActionMsg)
 
-            if IsControlJustReleased(0, 38) and ESX.PlayerData.job and ESX.PlayerData.job.name == 'taxi' then
+            if IsControlJustReleased(0, 38) and LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'taxi' then
                 if CurrentAction == 'taxi_actions_menu' then
                     OpenTaxiActionsMenu()
                 elseif CurrentAction == 'cloakroom' then
@@ -701,7 +701,7 @@ CreateThread(function()
 end)
 
 RegisterCommand('taximenu', function()
-    if not ESX.PlayerData.dead and Config.EnablePlayerManagement and ESX.PlayerData.job and ESX.PlayerData.job.name ==
+    if not LocalPlayer.state.info.dead and Config.EnablePlayerManagement and LocalPlayer.state.info.job and LocalPlayer.state.info.job.name ==
         'taxi' then
         OpenMobileTaxiActionsMenu()
     end

@@ -5,14 +5,14 @@ dragStatus.isDragged, isInShopMenu = false, false
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-	ESX.PlayerData = xPlayer
+	LocalPlayer.state.info = xPlayer
 	ESX.PlayerLoaded = true
 end)
 
 RegisterNetEvent('esx:onPlayerLogout')
 AddEventHandler('esx:onPlayerLogout', function()
 	ESX.PlayerLoaded = false
-	ESX.PlayerData = {}
+	LocalPlayer.state.info = {}
 end)
 
 function cleanPlayer(playerPed)
@@ -47,7 +47,7 @@ end
 
 function OpenCloakroomMenu()
 	local playerPed = PlayerPedId()
-	local grade = ESX.PlayerData.job.grade_name
+	local grade = LocalPlayer.state.info.job.grade_name
 
 	local elements = {
 		{label = TranslateCap('citizen_wear'), value = 'citizen_wear'},
@@ -736,7 +736,7 @@ function OpenBuyWeaponsMenu()
 	local elements = {}
 	local playerPed = PlayerPedId()
 
-	for k,v in ipairs(Config.AuthorizedWeapons[ESX.PlayerData.job.grade_name]) do
+	for k,v in ipairs(Config.AuthorizedWeapons[LocalPlayer.state.info.job.grade_name]) do
 		local weaponNum, weapon = ESX.GetWeapon(v.weapon)
 		local components, label = {}
 		local hasWeapon = HasPedGotWeapon(playerPed, joaat(v.weapon), false)
@@ -939,7 +939,7 @@ end
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-	ESX.PlayerData.job = job
+	LocalPlayer.state.info.job = job
 	if job.name == 'police' then
 		Wait(1000)
 		TriggerServerEvent('esx_policejob:forceBlip')
@@ -959,7 +959,7 @@ end)
 
 -- don't show dispatches if the player isn't in service
 AddEventHandler('esx_phone:cancelMessage', function(dispatchNumber)
-	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' and ESX.PlayerData.job.name == dispatchNumber then
+	if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'police' and LocalPlayer.state.info.job.name == dispatchNumber then
 		-- if esx_service is enabled
 		if Config.EnableESXService and not playerInService then
 			CancelEvent()
@@ -1002,7 +1002,7 @@ end)
 AddEventHandler('esx_policejob:hasEnteredEntityZone', function(entity)
 	local playerPed = PlayerPedId()
 
-	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' and IsPedOnFoot(playerPed) then
+	if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'police' and IsPedOnFoot(playerPed) then
 		CurrentAction     = 'remove_entity'
 		CurrentActionMsg  = TranslateCap('remove_prop')
 		CurrentActionData = {entity = entity}
@@ -1110,7 +1110,7 @@ CreateThread(function()
 
 			if DoesEntityExist(targetPed) and IsPedOnFoot(targetPed) and not IsPedDeadOrDying(targetPed, true) then
 				if not wasDragged then
-					AttachEntityToEntity(ESX.PlayerData.ped, targetPed, 11816, 0.54, 0.54, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+					AttachEntityToEntity(LocalPlayer.state.info.ped, targetPed, 11816, 0.54, 0.54, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
 					wasDragged = true
 				else
 					Wait(1000)
@@ -1118,11 +1118,11 @@ CreateThread(function()
 			else
 				wasDragged = false
 				dragStatus.isDragged = false
-				DetachEntity(ESX.PlayerData.ped, true, false)
+				DetachEntity(LocalPlayer.state.info.ped, true, false)
 			end
 		elseif wasDragged then
 			wasDragged = false
-			DetachEntity(ESX.PlayerData.ped, true, false)
+			DetachEntity(LocalPlayer.state.info.ped, true, false)
 		end
 	Wait(Sleep)
 	end
@@ -1157,9 +1157,9 @@ AddEventHandler('esx_policejob:OutVehicle', function()
 	local GetVehiclePedIsIn = GetVehiclePedIsIn
 	local IsPedSittingInAnyVehicle = IsPedSittingInAnyVehicle
 	local TaskLeaveVehicle = TaskLeaveVehicle
-	if IsPedSittingInAnyVehicle(ESX.PlayerData.ped) then
-		local vehicle = GetVehiclePedIsIn(ESX.PlayerData.ped, false)
-		TaskLeaveVehicle(ESX.PlayerData.ped, vehicle, 64)
+	if IsPedSittingInAnyVehicle(LocalPlayer.state.info.ped) then
+		local vehicle = GetVehiclePedIsIn(LocalPlayer.state.info.ped, false)
+		TaskLeaveVehicle(LocalPlayer.state.info.ped, vehicle, 64)
 	end
 end)
 
@@ -1215,9 +1215,9 @@ CreateThread(function()
 			DisableControlAction(0, 75, true)  -- Disable exit vehicle
 			DisableControlAction(27, 75, true) -- Disable exit vehicle
 
-			if IsEntityPlayingAnim(ESX.PlayerData.ped, 'mp_arresting', 'idle', 3) ~= 1 then
+			if IsEntityPlayingAnim(LocalPlayer.state.info.ped, 'mp_arresting', 'idle', 3) ~= 1 then
 				ESX.Streaming.RequestAnimDict('mp_arresting', function()
-					TaskPlayAnim(ESX.PlayerData.ped, 'mp_arresting', 'idle', 8.0, -8, -1, 49, 0.0, false, false, false)
+					TaskPlayAnim(LocalPlayer.state.info.ped, 'mp_arresting', 'idle', 8.0, -8, -1, 49, 0.0, false, false, false)
 					RemoveAnimDict('mp_arresting')
 				end)
 			end
@@ -1247,7 +1247,7 @@ end)
 CreateThread(function()
 	while true do
 		local Sleep = 1500
-		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
+		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'police' then
 			Sleep = 500
 			local playerPed = PlayerPedId()
 			local playerCoords = GetEntityCoords(playerPed)
@@ -1307,7 +1307,7 @@ CreateThread(function()
 					end
 				end
 
-				if Config.EnablePlayerManagement and ESX.PlayerData.job.grade_name == 'boss' then
+				if Config.EnablePlayerManagement and LocalPlayer.state.info.job.grade_name == 'boss' then
 					for i=1, #v.BossActions, 1 do
 						local distance = #(playerCoords - v.BossActions[i])
 
@@ -1365,7 +1365,7 @@ CreateThread(function()
 			local GetEntityCoords = GetEntityCoords
 			local GetClosestObjectOfType = GetClosestObjectOfType
 			local DoesEntityExist = DoesEntityExist
-			local playerCoords = GetEntityCoords(ESX.PlayerData.ped)
+			local playerCoords = GetEntityCoords(LocalPlayer.state.info.ped)
 	
 			local closestDistance = -1
 			local closestEntity   = nil
@@ -1405,7 +1405,7 @@ ESX.RegisterInput("police:interact", "(ESX PoliceJob) Interact", "keyboard", "E"
 		return 
 	end
 
-	if not ESX.PlayerData.job or (ESX.PlayerData.job and not ESX.PlayerData.job.name == 'police') then
+	if not LocalPlayer.state.info.job or (LocalPlayer.state.info.job and not LocalPlayer.state.info.job.name == 'police') then
 		return
 	end
 	if CurrentAction == 'menu_cloakroom' then
@@ -1453,7 +1453,7 @@ ESX.RegisterInput("police:interact", "(ESX PoliceJob) Interact", "keyboard", "E"
 end)
 
 ESX.RegisterInput("police:quickactions", "(ESX PoliceJob) Quick Actions", "keyboard", "F6", function()
-	if not ESX.PlayerData.job or (ESX.PlayerData.job.name ~= 'police') or isDead then
+	if not LocalPlayer.state.info.job or (LocalPlayer.state.info.job.name ~= 'police') or isDead then
 		return
 	end
 
@@ -1517,7 +1517,7 @@ AddEventHandler('esx_policejob:updateBlip', function()
 	end
 
 	-- Is the player a cop? In that case show all the blips for other cops
-	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
+	if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'police' then
 		ESX.TriggerServerCallback('esx_society:getOnlinePlayers', function(players)
 			for i=1, #players, 1 do
 				if players[i].job.name == 'police' then
@@ -1586,7 +1586,7 @@ function ImpoundVehicle(vehicle)
 	currentTask.busy = false
 end
 
-if ESX.PlayerLoaded and ESX.PlayerData.job == 'police' then
+if ESX.PlayerLoaded and LocalPlayer.state.info.job == 'police' then
 	SetTimeout(1000, function()
 		TriggerServerEvent('esx_policejob:forceBlip')
 	end)

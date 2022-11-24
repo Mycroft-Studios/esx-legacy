@@ -149,7 +149,7 @@ CreateThread(function()
         local Sleep = 1500
         local InShop = false
         local CurrentShop = nil
-        local coords = GetEntityCoords(ESX.PlayerData.ped)
+        local coords = GetEntityCoords(LocalPlayer.state.info.ped)
 
         for k, v in pairs(Config.Zones) do
             for i = 1, #v.Locations, 1 do

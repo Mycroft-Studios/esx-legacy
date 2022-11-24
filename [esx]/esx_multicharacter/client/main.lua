@@ -23,7 +23,7 @@ if ESX.GetConfig().Multichar then
 	RegisterNetEvent('esx_multicharacter:SetupCharacters')
 	AddEventHandler('esx_multicharacter:SetupCharacters', function()
 		ESX.PlayerLoaded = false
-		ESX.PlayerData = {}
+		LocalPlayer.state.info = {}
 		spawned = false
 		cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
 		local playerPed = PlayerPedId()

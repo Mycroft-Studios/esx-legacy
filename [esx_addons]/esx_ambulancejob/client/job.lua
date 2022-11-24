@@ -5,7 +5,7 @@ isInShopMenu = false
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-	ESX.PlayerData = xPlayer
+	LocalPlayer.state.info = xPlayer
 	ESX.PlayerLoaded = true
 end)
 
@@ -13,7 +13,7 @@ end)
 function OpenAmbulanceActionsMenu()
 	local elements = {{label = TranslateCap('cloakroom'), value = 'cloakroom'}}
 
-	if Config.EnablePlayerManagement and ESX.PlayerData.job.grade_name == 'boss' then
+	if Config.EnablePlayerManagement and LocalPlayer.state.info.job.grade_name == 'boss' then
 		table.insert(elements, {label = TranslateCap('boss_actions'), value = 'boss_actions'})
 	end
 
@@ -192,7 +192,7 @@ CreateThread(function()
 	while true do
 		local sleep = 1500
 
-		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'ambulance' then
+		if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'ambulance' then
 			local playerCoords = GetEntityCoords(PlayerPedId())
 			local isInMarker, hasExited = false, false
 			local currentHospital, currentPart, currentPartNum
@@ -382,7 +382,7 @@ CreateThread(function()
 end)
 
 RegisterCommand("ambulance", function(src)
-	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'ambulance' and not ESX.PlayerData.dead then
+	if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == 'ambulance' and not LocalPlayer.state.info.dead then
 		OpenMobileAmbulanceActionsMenu()
 	end
 end)

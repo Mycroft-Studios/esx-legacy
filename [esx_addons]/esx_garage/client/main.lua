@@ -112,7 +112,7 @@ end)
 
 AddEventHandler('esx_garage:hasEnteredMarker', function(name, part)
     if part == 'EntryPoint' then
-        local isInVehicle = IsPedInAnyVehicle(ESX.PlayerData.ped, false)
+        local isInVehicle = IsPedInAnyVehicle(LocalPlayer.state.info.ped, false)
         local garage = Config.Garages[name]
         thisGarage = garage
 
@@ -143,7 +143,7 @@ CreateThread(function()
     while true do
         local sleep = 500
 
-        local playerPed = ESX.PlayerData.ped
+        local playerPed = LocalPlayer.state.info.ped
         local coords = GetEntityCoords(playerPed)
         local inVehicle = IsPedInAnyVehicle(playerPed, false)
 
@@ -187,7 +187,7 @@ end)
 CreateThread(function()
     while true do
         if nearMarker then
-            local playerPed = ESX.PlayerData.ped
+            local playerPed = LocalPlayer.state.info.ped
             local coords = GetEntityCoords(playerPed)
             local isInMarker = false
             local currentMarker = nil

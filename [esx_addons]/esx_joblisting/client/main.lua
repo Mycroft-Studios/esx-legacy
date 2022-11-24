@@ -27,7 +27,7 @@ CreateThread(function()
   while true do
     local Sleep = 1500
 
-    local coords = GetEntityCoords(ESX.PlayerData.ped)
+    local coords = GetEntityCoords(LocalPlayer.state.info.ped)
     local isInMarker = false
 
     for i = 1, #Config.Zones, 1 do

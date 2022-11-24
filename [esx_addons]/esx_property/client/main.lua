@@ -43,7 +43,7 @@ function RefreshBlips()
 
   for k, v in pairs(Properties) do
     if v.Owned and Config.OwnedBlips then
-      if v.Owner == ESX.PlayerData.identifier then
+      if v.Owner == LocalPlayer.state.info.identifier then
         local Blip = AddBlipForCoord(v.Entrance.x, v.Entrance.y, v.Entrance.z)
         SetBlipSprite(Blip, 40)
         SetBlipAsShortRange(Blip, true)
@@ -93,25 +93,25 @@ function RefreshBlips()
 end
 
 RegisterNetEvent("esx_property:syncProperties", function(properties, lastProperty)
-  while not ESX.PlayerLoaded and not ESX.PlayerData.identifier do
+  while not ESX.PlayerLoaded and not LocalPlayer.state.info.identifier do
     Wait(0)
   end
   Properties = properties
   for house, data in pairs(Properties) do
     if data.Keys then
       for ident, vaues in pairs(data.Keys) do
-        if vaues and ident == ESX.PlayerData.identifier then
+        if vaues and ident == LocalPlayer.state.info.identifier then
           PlayerKeys[house] = true
         end
       end
     end
   end
   if lastProperty then
-    if Properties[lastProperty.id] and (Properties[lastProperty.id].Owner == ESX.PlayerData.identifier or PlayerKeys[lastProperty.id]) then
+    if Properties[lastProperty.id] and (Properties[lastProperty.id].Owner == LocalPlayer.state.info.identifier or PlayerKeys[lastProperty.id]) then
       AttemptHouseEntry(lastProperty.id)
     else
       ESX.TriggerServerCallback('esx_property:RemoveLastProperty', function()
-        SetEntityCoords(ESX.PlayerData.ped, vector3(lastProperty.coords.x, lastProperty.coords.y, lastProperty.coords.z))
+        SetEntityCoords(LocalPlayer.state.info.ped, vector3(lastProperty.coords.x, lastProperty.coords.y, lastProperty.coords.z))
       end)
     end
   end
@@ -253,25 +253,25 @@ function PropertyMenuElements(PropertyId)
     else
       table.insert(elements, {title = TranslateCap("door_unlocked"), icon = "fas fa-unlock", value = 'property_lock'})
     end
-    if ESX.PlayerData.identifier == Property.Owner then
+    if LocalPlayer.state.info.identifier == Property.Owner then
       table.insert(elements,
         {title = TranslateCap("name_manage"), description = TranslateCap("name_manage_desc"), icon = "fa-solid fa-signature", value = 'property_name'})
     end
     if not InProperty then
-      if ESX.PlayerData.identifier == Property.Owner then
+      if LocalPlayer.state.info.identifier == Property.Owner then
         table.insert(elements, {title = TranslateCap("key_management"), description = TranslateCap("key_management_desc"), icon = "fas fa-key", value = 'property_keys'})
         table.insert(elements,
           {title = TranslateCap("sell_title"), description = TranslateCap("sell_desc", ESX.Math.GroupDigits(ESX.Round(Property.Price * 0.6))),
            icon = "fas fa-dollar-sign", value = 'property_sell'})
       end
-      if Config.Raiding.Enabled and Property.Locked and ESX.PlayerData.job and ESX.GetPlayerData().job.name == "police" then
+      if Config.Raiding.Enabled and Property.Locked and LocalPlayer.state.info.job and ESX.GetPlayerData().job.name == "police" then
         table.insert(elements, {title = TranslateCap("raid_title"), description = TranslateCap("raid_desc"), icon = "fas fa-bomb", value = 'property_raid'})
       end
     else
-      if (Config.CCTV.Enabled and Properties[PropertyId].cctv.enabled) and (ESX.PlayerData.identifier == Property.Owner or PlayerKeys[PropertyId]) then
+      if (Config.CCTV.Enabled and Properties[PropertyId].cctv.enabled) and (LocalPlayer.state.info.identifier == Property.Owner or PlayerKeys[PropertyId]) then
         table.insert(elements, {title = TranslateCap("cctv_title"), description = TranslateCap("cctv_desc"), icon = "fas fa-video", value = 'property_cctv'})
       end
-      if (ESX.PlayerData.identifier == Property.Owner or PlayerKeys[PropertyId]) then
+      if (LocalPlayer.state.info.identifier == Property.Owner or PlayerKeys[PropertyId]) then
         if Config.CanCustomiseInventoryAndWardrobePositions then
           if Config.OxInventory then
             table.insert(elements, {title = TranslateCap("inventory_title"), description = TranslateCap("inventory_desc"),
@@ -284,11 +284,11 @@ function PropertyMenuElements(PropertyId)
           {title = TranslateCap("furniture_title"), description = TranslateCap("furniture_desc"), icon = "fas fa-boxes-stacked", value = 'property_furniture'})
       end
     end
-    if (not Property.Locked or Config.OwnerCanAlwaysEnter and ESX.PlayerData.identifier == Property.Owner) and not InProperty then
+    if (not Property.Locked or Config.OwnerCanAlwaysEnter and LocalPlayer.state.info.identifier == Property.Owner) and not InProperty then
       table.insert(elements, {title = TranslateCap("enter_title"), icon = "fas fa-door-open", value = 'property_enter'})
     end
     if Property.Locked and not InProperty and
-      not (Config.OwnerCanAlwaysEnter and ESX.PlayerData.identifier == Property.Owner or PlayerKeys[PropertyId]) then
+      not (Config.OwnerCanAlwaysEnter and LocalPlayer.state.info.identifier == Property.Owner or PlayerKeys[PropertyId]) then
       table.insert(elements, {title = TranslateCap("knock_title"), icon = "fa-solid fa-hand-sparkles", value = 'property_knock'})
     end
   else
@@ -297,7 +297,7 @@ function PropertyMenuElements(PropertyId)
         {title = TranslateCap("buy_title"), description = TranslateCap("buy_desc", ESX.Math.GroupDigits(ESX.Round(Property.Price))), icon = "fas fa-shopping-cart",
          value = 'property_buy'})
     else
-      if ESX.PlayerData.job.name == PM.job and ESX.PlayerData.job.grade >= PM.Permissions.SellProperty then
+      if LocalPlayer.state.info.job.name == PM.job and LocalPlayer.state.info.job.grade >= PM.Permissions.SellProperty then
         table.insert(elements, {title = TranslateCap("sellplayer_title"), description = TranslateCap("sellplayer_desc", ESX.Math.GroupDigits(ESX.Round(Property.Price))),
                                 icon = "fas fa-shopping-cart", value = 'property_sell_re'})
       end
@@ -394,7 +394,7 @@ function OpenPropertyMenu(PropertyId)
             else
               ESX.ShowNotification(TranslateCap("storage_pos_error"), "error")
             end
-          end, PropertyId, GetEntityCoords(ESX.PlayerData.ped))
+          end, PropertyId, GetEntityCoords(LocalPlayer.state.info.ped))
           break
         end
       end
@@ -416,7 +416,7 @@ function OpenPropertyMenu(PropertyId)
             else
               ESX.ShowNotification(TranslateCap("wardrobe_pos_error"), "error")
             end
-          end, PropertyId, GetEntityCoords(ESX.PlayerData.ped))
+          end, PropertyId, GetEntityCoords(LocalPlayer.state.info.ped))
           break
         end
       end
@@ -489,7 +489,7 @@ function AttemptHouseExit(PropertyId)
   local Property = Properties[PropertyId]
 
   ESX.ShowNotification(TranslateCap("exiting"), "success")
-  FreezeEntityPosition(ESX.PlayerData.ped, true)
+  FreezeEntityPosition(LocalPlayer.state.info.ped, true)
   InProperty = false
   CurrentId = 0
   SettingValue = ""
@@ -510,13 +510,13 @@ function AttemptHouseExit(PropertyId)
     SpawnedFurniture = {}
   end
   Wait(1500)
-  FreezeEntityPosition(ESX.PlayerData.ped, false)
+  FreezeEntityPosition(LocalPlayer.state.info.ped, false)
   DoScreenFadeIn(1500)
 end
 
 RegisterCommand("getoffset", function(source)
   if InProperty then
-    local PlayerPed = ESX.PlayerData.ped
+    local PlayerPed = LocalPlayer.state.info.ped
     local Pcoords = GetEntityCoords(PlayerPed)
     local Property = Properties[CurrentId]
     local Interior = GetInteriorValues(Property.Interior)
@@ -535,7 +535,7 @@ function AttemptHouseEntry(PropertyId)
   CurrentId = PropertyId
   ESX.UI.Menu.CloseAll()
   local Property = Properties[CurrentId]
-  FreezeEntityPosition(ESX.PlayerData.ped, true)
+  FreezeEntityPosition(LocalPlayer.state.info.ped, true)
   DoScreenFadeOut(1500)
   Wait(1500)
   if Interior.type == "shell" then
@@ -565,7 +565,7 @@ function AttemptHouseEntry(PropertyId)
     end
   end
   local ShowingTextUI2 = false
-  FreezeEntityPosition(ESX.PlayerData.ped, false)
+  FreezeEntityPosition(LocalPlayer.state.info.ped, false)
   TriggerServerEvent("esx_property:enter", PropertyId)
   Wait(1500)
   DoScreenFadeIn(1800)
@@ -581,7 +581,7 @@ function AttemptHouseEntry(PropertyId)
       local Sleep = 1000
       local Near = false
       SetRainLevel(0.0)
-      local PlayerPed = ESX.PlayerData.ped
+      local PlayerPed = LocalPlayer.state.info.ped
       local PlayerCoords = GetEntityCoords(PlayerPed)
       if Interior.type == "shell" then
         if #(PlayerCoords - vector3(Property.Entrance.x, Property.Entrance.y, 1999)) < 5.0 then
@@ -699,7 +699,7 @@ function AttemptHouseEntry(PropertyId)
 end
 
 function StoreVehicle(PropertyId)
-  local Vehicle = GetVehiclePedIsIn(ESX.PlayerData.ped, false)
+  local Vehicle = GetVehiclePedIsIn(LocalPlayer.state.info.ped, false)
   if Vehicle then
     local VehProperties = ESX.Game.GetVehicleProperties(Vehicle)
     VehProperties.DisplayName = GetLabelText(GetDisplayNameFromVehicleModel(VehProperties.model))
@@ -734,7 +734,7 @@ function AccessGarage(PropertyId)
               function(vehicle)
                 SetEntityAsMissionEntity(vehicle, true, true)
                 ESX.Game.SetVehicleProperties(vehicle, element.Properties)
-                TaskWarpPedIntoVehicle(ESX.PlayerData.ped, vehicle, -1)
+                TaskWarpPedIntoVehicle(LocalPlayer.state.info.ped, vehicle, -1)
                 SetModelAsNoLongerNeeded(element.Properties.model)
                 TriggerServerEvent("esx_property:SetVehicleOut", PropertyId, element.index)
               end)
@@ -761,7 +761,7 @@ CreateThread(function()
           local GetEntityCoords = GetEntityCoords
           local IsControlJustPressed = IsControlJustPressed
           local DrawMarker = DrawMarker
-          local Coords = GetEntityCoords(ESX.PlayerData.ped)
+          local Coords = GetEntityCoords(LocalPlayer.state.info.ped)
           local Entrance = vector3(Properties[i].Entrance.x, Properties[i].Entrance.y, Properties[i].Entrance.z)
           if not InCCTV then
             if #(Coords - Entrance) < 10.0 then
@@ -781,15 +781,15 @@ CreateThread(function()
               end
             end
           end
-          if Properties[i].garage.enabled and Properties[i].garage.pos and (ESX.PlayerData.identifier == Properties[i].Owner or PlayerKeys[i]) then
+          if Properties[i].garage.enabled and Properties[i].garage.pos and (LocalPlayer.state.info.identifier == Properties[i].Owner or PlayerKeys[i]) then
             local Garage = vector3(Properties[i].garage.pos.x, Properties[i].garage.pos.y, Properties[i].garage.pos.z)
             if #(Coords - Garage) < 10.0 then
               Sleep = 0
               DrawMarker(36, Garage, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 1.5, 1.5, 50, 200, 50, 200, false, false, 2, true, nil, nil, false)
               if #(Coords - Garage) < 3.0 then
                 nearby = true
-                if GetVehiclePedIsUsing(ESX.PlayerData.ped) ~= 0 then
-                  local veh = GetVehiclePedIsIn(ESX.PlayerData.ped, false)
+                if GetVehiclePedIsUsing(LocalPlayer.state.info.ped) ~= 0 then
+                  local veh = GetVehiclePedIsIn(LocalPlayer.state.info.ped, false)
                   local vehmodel = GetEntityModel(veh)
                   local DisplayName = GetLabelText(GetDisplayNameFromVehicleModel(vehmodel))
                   if not CurrentDrawing.Showing or CurrentDrawing.Name ~= DisplayName then
@@ -805,7 +805,7 @@ CreateThread(function()
                   end
                 end
                 if IsControlJustPressed(0, 38) then
-                  if GetVehiclePedIsUsing(ESX.PlayerData.ped) ~= 0 then
+                  if GetVehiclePedIsUsing(LocalPlayer.state.info.ped) ~= 0 then
                     StoreVehicle(i)
                   else
                     AccessGarage(i)
@@ -857,11 +857,11 @@ function OpenPMQuickMenu(Action)
   elseif Action == "ActionsMenu" then
     local elements = {{unselectable = true, title = TranslateCap("actions"), value = "RealEstateActions"}}
 
-    if ESX.PlayerData.job.name == PM.job then
-      if ESX.PlayerData.job.grade >= PM.Permissions.CreateProperty then
+    if LocalPlayer.state.info.job.name == PM.job then
+      if LocalPlayer.state.info.job.grade >= PM.Permissions.CreateProperty then
         elements[#elements + 1] = {title = TranslateCap("property_create"), value = "CreateProperty"}
       end
-      if ESX.PlayerData.job.grade >= PM.Permissions.ManagePropertiesFromQuickActions then
+      if LocalPlayer.state.info.job.grade >= PM.Permissions.ManagePropertiesFromQuickActions then
         elements[#elements + 1] = {title = TranslateCap("property_manage"), value = "manage"}
       end
     end
@@ -890,10 +890,10 @@ CreateThread(function()
     local Sleep = 2500
     local DrawMarker = DrawMarker
     if ESX.IsPlayerLoaded() then
-      if ESX.PlayerData.job and ESX.PlayerData.job.name == PM.job then
+      if LocalPlayer.state.info.job and LocalPlayer.state.info.job.name == PM.job then
         Sleep = 1500
 
-        local Coords = GetEntityCoords(ESX.PlayerData.ped)
+        local Coords = GetEntityCoords(LocalPlayer.state.info.ped)
         local nearby = false
 
         for k, v in pairs(PM.Locations) do
@@ -933,7 +933,7 @@ RegisterNetEvent("esx_property:CreateProperty", function()
       local GetEntityCoords = GetEntityCoords
       local GetStreetNameAtCoord = GetStreetNameAtCoord
       local GetStreetNameFromHashKey = GetStreetNameFromHashKey
-      local Pcoords = GetEntityCoords(ESX.PlayerData.ped)
+      local Pcoords = GetEntityCoords(LocalPlayer.state.info.ped)
       local StreetHash = GetStreetNameAtCoord(Pcoords.x, Pcoords.y, Pcoords.z)
       local StreetName = GetStreetNameFromHashKey(StreetHash)
       local Zone = GetZoneAtCoords(Pcoords.x, Pcoords.y, Pcoords.z)
@@ -966,7 +966,7 @@ RegisterNetEvent("esx_property:CreateProperty", function()
           end
           if element.index then
             if element.index == "entrance" then
-              local PlayerPos = GetEntityCoords(ESX.PlayerData.ped)
+              local PlayerPos = GetEntityCoords(LocalPlayer.state.info.ped)
               HouseData.entrance = {x = ESX.Math.Round(PlayerPos.x, 2), y = ESX.Math.Round(PlayerPos.y, 2), z = ESX.Math.Round(PlayerPos.z, 2) - 0.98}
               Property[7].title = TranslateCap("entrance_set_title")
               Property[7].description = TranslateCap("entrance_set_description",HouseData.entrance.x, HouseData.entrance.y, HouseData.entrance.z)
@@ -1060,9 +1060,9 @@ RegisterNetEvent("esx_property:CreateProperty", function()
               while true do
                 Wait(0)
                 if IsControlJustPressed(0, 38) then
-                  local PlayerPos = GetEntityCoords(ESX.PlayerData.ped)
-                  Property[5].value.pos = GetEntityCoords(ESX.PlayerData.ped)
-                  Property[5].value.heading = GetEntityHeading(ESX.PlayerData.ped)
+                  local PlayerPos = GetEntityCoords(LocalPlayer.state.info.ped)
+                  Property[5].value.pos = GetEntityCoords(LocalPlayer.state.info.ped)
+                  Property[5].value.heading = GetEntityHeading(LocalPlayer.state.info.ped)
                   ESX.HideUI()
                   OpenCreate()
                   break
@@ -1291,7 +1291,7 @@ RegisterNetEvent("esx_property:AdminMenu", function()
                         else
                           ESX.ShowNotification("You ~r~Cannot~s~ Change This Option!", "error")
                         end
-                      end, currentProperty, GetEntityHeading(ESX.PlayerData.ped))
+                      end, currentProperty, GetEntityHeading(LocalPlayer.state.info.ped))
                       break
                     end
                   end
@@ -1429,7 +1429,7 @@ RegisterNetEvent("esx_property:AdminMenu", function()
                     else
                       ESX.ShowNotification("You Cannot Change this property!", "error")
                     end
-                  end, currentProperty, GetEntityCoords(ESX.PlayerData.ped))
+                  end, currentProperty, GetEntityCoords(LocalPlayer.state.info.ped))
                 end
               end
             end)
@@ -1450,7 +1450,7 @@ RegisterNetEvent("esx_property:AdminMenu", function()
             ESX.OpenContext("right", elements, function(menu, element)
               if element.value then
                 if element.value == "goto" then
-                  SetEntityCoords(ESX.PlayerData.ped, Properties[currentProperty].Entrance.x, Properties[currentProperty].Entrance.y,
+                  SetEntityCoords(LocalPlayer.state.info.ped, Properties[currentProperty].Entrance.x, Properties[currentProperty].Entrance.y,
                     Properties[currentProperty].Entrance.z)
                   ESX.ShowNotification("Teleported to Property!")
                 end
