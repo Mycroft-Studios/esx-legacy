@@ -362,7 +362,7 @@ end)
 RegisterNetEvent('esx:updateCoords')
 AddEventHandler('esx:updateCoords', function()
   local source = source
-  local xPlayer = ESX.GetPlayerFromId(source)
+  local xPlayer = Player(source).state.Info
 
   if xPlayer then
     xPlayer.updateCoords()
@@ -372,7 +372,7 @@ end)
 if not Config.OxInventory then
   RegisterNetEvent('esx:updateWeaponAmmo')
   AddEventHandler('esx:updateWeaponAmmo', function(weaponName, ammoCount)
-    local xPlayer = ESX.GetPlayerFromId(source)
+    local xPlayer = Player(source).state.Info
 
     if xPlayer then
       xPlayer.updateWeaponAmmo(weaponName, ammoCount)
@@ -537,7 +537,7 @@ if not Config.OxInventory then
   RegisterNetEvent('esx:useItem')
   AddEventHandler('esx:useItem', function(itemName)
     local source = source
-    local xPlayer = ESX.GetPlayerFromId(source)
+    local xPlayer = Player(source).state.Info
     local count = xPlayer.getInventoryItem(itemName).count
 
     if count > 0 then
@@ -549,7 +549,7 @@ if not Config.OxInventory then
 
   RegisterNetEvent('esx:onPickup')
   AddEventHandler('esx:onPickup', function(pickupId)
-    local pickup, xPlayer, success = Core.Pickups[pickupId], ESX.GetPlayerFromId(source)
+    local pickup, xPlayer, success = Core.Pickups[pickupId], Player(source).state.Info
 
     if pickup then
       if pickup.type == 'item_standard' then
@@ -585,7 +585,7 @@ if not Config.OxInventory then
 end
 
 ESX.RegisterServerCallback('esx:getPlayerData', function(source, cb)
-  local xPlayer = ESX.GetPlayerFromId(source)
+  local xPlayer = Player(source).state.Info
 
   cb({identifier = xPlayer.identifier, accounts = xPlayer.getAccounts(), inventory = xPlayer.getInventory(), job = xPlayer.getJob(),
       loadout = xPlayer.getLoadout(), money = xPlayer.getMoney(), position = xPlayer.getCoords(true)})

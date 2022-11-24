@@ -20,7 +20,7 @@ end)
 RegisterServerEvent('esx_holdup:robberyStarted')
 AddEventHandler('esx_holdup:robberyStarted', function(currentStore)
 	local source  = source
-	local xPlayer  = ESX.GetPlayerFromId(source)
+	local xPlayer  = Player(source).state.Info
 	if Stores[currentStore] then
 		local store = Stores[currentStore]
 		if (os.time() - store.lastRobbed) < Config.TimerBeforeNewRob and store.lastRobbed ~= 0 then

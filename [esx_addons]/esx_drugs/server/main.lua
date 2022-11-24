@@ -4,7 +4,7 @@ local alive = true
 
 RegisterServerEvent('esx_drugs:sellDrug')
 AddEventHandler('esx_drugs:sellDrug', function(itemName, amount)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	local price = Config.DrugDealerItems[itemName]
 	local xItem = xPlayer.getInventoryItem(itemName)
 
@@ -31,7 +31,7 @@ AddEventHandler('esx_drugs:sellDrug', function(itemName, amount)
 end)
 
 ESX.RegisterServerCallback('esx_drugs:buyLicense', function(source, cb, licenseName)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	local license = Config.LicensePrices[licenseName]
 
 	if license then
@@ -52,7 +52,7 @@ end)
 
 RegisterServerEvent('esx_drugs:pickedUpCannabis')
 AddEventHandler('esx_drugs:pickedUpCannabis', function()
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	local cime = math.random(5,10)
 
 	if xPlayer.canCarryItem('cannabis', cime) then
@@ -63,7 +63,7 @@ AddEventHandler('esx_drugs:pickedUpCannabis', function()
 end)
 
 ESX.RegisterServerCallback('esx_drugs:canPickUp', function(source, cb, item)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	cb(xPlayer.canCarryItem(item, 1))
 end)
 
@@ -73,7 +73,7 @@ AddEventHandler('esx_drugs:outofbound', function()
 end)
 
 ESX.RegisterServerCallback('esx_drugs:cannabis_count', function(source, cb)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	local xCannabis = xPlayer.getInventoryItem('cannabis').count
 	cb(xCannabis)
 end)
@@ -82,7 +82,7 @@ RegisterServerEvent('esx_drugs:processCannabis')
 AddEventHandler('esx_drugs:processCannabis', function()
   if not playersProcessingCannabis[source] then
 		local source = source
-		local xPlayer = ESX.GetPlayerFromId(source)
+		local xPlayer = Player(source).state.Info
 		local xCannabis = xPlayer.getInventoryItem('cannabis')
 		local can = true
 		outofbound = false

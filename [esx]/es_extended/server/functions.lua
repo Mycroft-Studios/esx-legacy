@@ -240,7 +240,7 @@ function ESX.GetExtendedPlayers(key, val)
   return xPlayers
 end
 
-function ESX.GetPlayerFromId(source)
+function Player(source).state.Info
   return ESX.Players[tonumber(source)]
 end
 

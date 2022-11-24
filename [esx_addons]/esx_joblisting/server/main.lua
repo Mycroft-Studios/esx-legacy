@@ -34,7 +34,7 @@ end
 RegisterServerEvent('esx_joblisting:setJob')
 AddEventHandler('esx_joblisting:setJob', function(job)
   local source = source
-  local xPlayer = ESX.GetPlayerFromId(source)
+  local xPlayer = Player(source).state.Info
   local jobs = getJobs()
 
   if xPlayer and IsNearCentre(source) then

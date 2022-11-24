@@ -43,7 +43,7 @@ end)
 
 RegisterServerEvent('esx_status:update')
 AddEventHandler('esx_status:update', function(status)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	if xPlayer then
 		xPlayer.set('status', status)	-- save to xPlayer for compatibility
 		ESX.Players[xPlayer.source] = status	-- save locally for performance

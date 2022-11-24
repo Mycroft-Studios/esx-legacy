@@ -27,7 +27,7 @@ AddEventHandler('esx_banking:doingType', function(typeData)
     end
 
     local source = source
-    local xPlayer = ESX.GetPlayerFromId(source)
+    local xPlayer = Player(source).state.Info
     local identifier = xPlayer.getIdentifier()
     local money = xPlayer.getAccount('money').money
     local bankMoney = xPlayer.getAccount('bank').money
@@ -91,7 +91,7 @@ end)
 
 -- register callbacks
 ESX.RegisterServerCallback("esx_banking:getPlayerData", function(source, cb)
-    local xPlayer = ESX.GetPlayerFromId(source)
+    local xPlayer = Player(source).state.Info
     local identifier = xPlayer.getIdentifier()
     local weekAgo = (os.time() - 604800) * 1000
     local transactionHistory = MySQL.Sync.fetchAll(
@@ -107,7 +107,7 @@ ESX.RegisterServerCallback("esx_banking:getPlayerData", function(source, cb)
 end)
 
 ESX.RegisterServerCallback("esx_banking:checkPincode", function(source, cb, inputPincode)
-    local xPlayer = ESX.GetPlayerFromId(source)
+    local xPlayer = Player(source).state.Info
     local identifier = xPlayer.getIdentifier()
     local pincode = MySQL.Sync.fetchScalar('SELECT COUNT(1) AS pincode FROM users WHERE identifier = ? AND pincode = ?',
         {identifier, inputPincode})

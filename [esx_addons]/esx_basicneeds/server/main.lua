@@ -1,7 +1,7 @@
 CreateThread(function()
 	for k,v in pairs(Config.Food) do
 		ESX.RegisterUsableItem(k, function(source)
-			local xPlayer = ESX.GetPlayerFromId(source)
+			local xPlayer = Player(source).state.Info
 			if v.remove then
 				xPlayer.removeInventoryItem(k,1)
 			end
@@ -15,7 +15,7 @@ end)
 CreateThread(function()
 	for k,v in pairs(Config.Drinks) do
 		ESX.RegisterUsableItem(k, function(source)
-			local xPlayer = ESX.GetPlayerFromId(source)
+			local xPlayer = Player(source).state.Info
 			if v.remove then
 				xPlayer.removeInventoryItem(k,1)
 			end

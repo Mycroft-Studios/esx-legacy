@@ -419,7 +419,7 @@ else
 	end
 
 	ESX.RegisterServerCallback('esx_identity:registerIdentity', function(source, cb, data)
-		local xPlayer = ESX.GetPlayerFromId(source)
+		local xPlayer = Player(source).state.Info
 
 		if xPlayer then
 			if not alreadyRegistered[xPlayer.identifier] then

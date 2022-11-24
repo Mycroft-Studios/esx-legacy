@@ -1,6 +1,6 @@
 RegisterServerEvent('esx_skin:save')
 AddEventHandler('esx_skin:save', function(skin)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	if not ESX.GetConfig().OxInventory then
 		local defaultMaxWeight = ESX.GetConfig().MaxWeight
@@ -21,7 +21,7 @@ end)
 
 RegisterServerEvent('esx_skin:responseSaveSkin')
 AddEventHandler('esx_skin:responseSaveSkin', function(skin)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	if xPlayer.getGroup() == 'admin' then
 		local file = io.open('resources/[esx]/esx_skin/skins.txt', "a")
@@ -35,7 +35,7 @@ AddEventHandler('esx_skin:responseSaveSkin', function(skin)
 end)
 
 ESX.RegisterServerCallback('esx_skin:getPlayerSkin', function(source, cb)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	MySQL.query('SELECT skin FROM users WHERE identifier = @identifier', {
 		['@identifier'] = xPlayer.identifier

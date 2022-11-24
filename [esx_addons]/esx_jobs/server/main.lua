@@ -74,7 +74,7 @@ end)
 
 RegisterServerEvent('esx_jobs:startWork', function(zoneIndex, zoneKey)
 	if not playersWorking[source] then
-		local xPlayer = ESX.GetPlayerFromId(source)
+		local xPlayer = Player(source).state.Info
 
 		if xPlayer then
 			local jobObject = Config.Jobs[xPlayer.job.name]
@@ -102,7 +102,7 @@ RegisterServerEvent('esx_jobs:stopWork', function()
 end)
 
 RegisterNetEvent('esx_jobs:caution', function(cautionType, cautionAmount, spawnPoint, vehicle)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	if cautionType == 'take' then
 		if cautionAmount <= Config.MaxCaution and cautionAmount >= 0 then

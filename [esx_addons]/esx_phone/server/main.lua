@@ -111,7 +111,7 @@ AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
 end)
 
 AddEventHandler('esx:playerDropped', function(source)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	local phoneNumber = xPlayer.get('phoneNumber')
 
 	TriggerClientEvent('esx_phone:setPhoneNumberSource', -1, phoneNumber, -1)
@@ -143,7 +143,7 @@ end)
 
 RegisterServerEvent('esx_phone:send')
 AddEventHandler('esx_phone:send', function(phoneNumber, message, anon, position)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	print(('esx_phone: MESSAGE => %s@%s: %s'):format(xPlayer.name, phoneNumber, message))
 
 	if PhoneNumbers[phoneNumber] then

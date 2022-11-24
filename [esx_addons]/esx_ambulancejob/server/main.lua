@@ -11,7 +11,7 @@ end
 RegisterNetEvent('esx_ambulancejob:revive')
 AddEventHandler('esx_ambulancejob:revive', function(playerId)
 	playerId = tonumber(playerId)
-		local xPlayer = source and ESX.GetPlayerFromId(source)
+		local xPlayer = source and Player(source).state.Info
 
 		if xPlayer and xPlayer.job.name == 'ambulance' then
 			local xTarget = ESX.GetPlayerFromId(playerId)
@@ -116,7 +116,7 @@ end)
 
 RegisterNetEvent('esx_ambulancejob:heal')
 AddEventHandler('esx_ambulancejob:heal', function(target, type)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	if xPlayer.job.name == 'ambulance' then
 		TriggerClientEvent('esx_ambulancejob:heal', target, type)
@@ -125,7 +125,7 @@ end)
 
 RegisterNetEvent('esx_ambulancejob:putInVehicle')
 AddEventHandler('esx_ambulancejob:putInVehicle', function(target)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	if xPlayer.job.name == 'ambulance' then
 		TriggerClientEvent('esx_ambulancejob:putInVehicle', target)
@@ -133,7 +133,7 @@ AddEventHandler('esx_ambulancejob:putInVehicle', function(target)
 end)
 
 ESX.RegisterServerCallback('esx_ambulancejob:removeItemsAfterRPDeath', function(source, cb)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	if Config.OxInventory and Config.RemoveItemsAfterRPDeath then
 		exports.ox_inventory:ClearInventory(xPlayer.source)
@@ -186,7 +186,7 @@ end)
 
 if Config.EarlyRespawnFine then
 	ESX.RegisterServerCallback('esx_ambulancejob:checkBalance', function(source, cb)
-		local xPlayer = ESX.GetPlayerFromId(source)
+		local xPlayer = Player(source).state.Info
 		local bankBalance = xPlayer.getAccount('bank').money
 
 		cb(bankBalance >= Config.EarlyRespawnFineAmount)
@@ -194,7 +194,7 @@ if Config.EarlyRespawnFine then
 
 	RegisterNetEvent('esx_ambulancejob:payFine')
 	AddEventHandler('esx_ambulancejob:payFine', function()
-		local xPlayer = ESX.GetPlayerFromId(source)
+		local xPlayer = Player(source).state.Info
 		local fineAmount = Config.EarlyRespawnFineAmount
 
 		xPlayer.showNotification(TranslateCap('respawn_bleedout_fine_msg', ESX.Math.GroupDigits(fineAmount)))
@@ -203,14 +203,14 @@ if Config.EarlyRespawnFine then
 end
 
 ESX.RegisterServerCallback('esx_ambulancejob:getItemAmount', function(source, cb, item)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	local quantity = xPlayer.getInventoryItem(item).count
 
 	cb(quantity)
 end)
 
 ESX.RegisterServerCallback('esx_ambulancejob:buyJobVehicle', function(source, cb, vehicleProps, type)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	local price = getPriceFromHash(vehicleProps.model, xPlayer.job.grade_name, type)
 
 	-- vehicle model not found
@@ -231,7 +231,7 @@ ESX.RegisterServerCallback('esx_ambulancejob:buyJobVehicle', function(source, cb
 end)
 
 ESX.RegisterServerCallback('esx_ambulancejob:storeNearbyVehicle', function(source, cb, plates)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	local plate = MySQL.scalar.await('SELECT plate FROM owned_vehicles WHERE owner = ? AND plate IN (?) AND job = ?', {xPlayer.identifier, plates, xPlayer.job.name})
 
@@ -264,7 +264,7 @@ end
 
 RegisterNetEvent('esx_ambulancejob:removeItem')
 AddEventHandler('esx_ambulancejob:removeItem', function(item)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	xPlayer.removeInventoryItem(item, 1)
 
 	if item == 'bandage' then
@@ -276,7 +276,7 @@ end)
 
 RegisterNetEvent('esx_ambulancejob:giveItem')
 AddEventHandler('esx_ambulancejob:giveItem', function(itemName, amount)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	if xPlayer.job.name ~= 'ambulance' then
 		print(('[^2WARNING^7] Player ^5%s^7 Tried Giving Themselves -> ^5' .. itemName ..'^7!'):format(xPlayer.source))
@@ -305,7 +305,7 @@ end, false)
 
 ESX.RegisterUsableItem('medikit', function(source)
 	if not playersHealing[source] then
-		local xPlayer = ESX.GetPlayerFromId(source)
+		local xPlayer = Player(source).state.Info
 		xPlayer.removeInventoryItem('medikit', 1)
 
 		playersHealing[source] = true
@@ -318,7 +318,7 @@ end)
 
 ESX.RegisterUsableItem('bandage', function(source)
 	if not playersHealing[source] then
-		local xPlayer = ESX.GetPlayerFromId(source)
+		local xPlayer = Player(source).state.Info
 		xPlayer.removeInventoryItem('bandage', 1)
 
 		playersHealing[source] = true
@@ -330,14 +330,14 @@ ESX.RegisterUsableItem('bandage', function(source)
 end)
 
 ESX.RegisterServerCallback('esx_ambulancejob:getDeadPlayers', function(source, cb)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	if xPlayer.job.name == "ambulance" then 
 		cb(deadPlayers)
 	end
 end)
 
 ESX.RegisterServerCallback('esx_ambulancejob:getDeathStatus', function(source, cb)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	MySQL.scalar('SELECT is_dead FROM users WHERE identifier = ?', {xPlayer.identifier}, function(isDead)
 		cb(isDead)
 	end)
@@ -345,7 +345,7 @@ end)
 
 RegisterNetEvent('esx_ambulancejob:setDeathStatus')
 AddEventHandler('esx_ambulancejob:setDeathStatus', function(isDead)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	if type(isDead) == 'boolean' then
 		MySQL.update('UPDATE users SET is_dead = ? WHERE identifier = ?', {isDead, xPlayer.identifier})

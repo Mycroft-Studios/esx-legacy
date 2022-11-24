@@ -39,7 +39,7 @@ end)
 RegisterServerEvent('esx_lscustom:buyMod')
 AddEventHandler('esx_lscustom:buyMod', function(price)
 	local source = source
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	price = tonumber(price)
 
 	if Config.IsMechanicJobOnly then
@@ -71,7 +71,7 @@ end)
 
 RegisterServerEvent('esx_lscustom:refreshOwnedVehicle')
 AddEventHandler('esx_lscustom:refreshOwnedVehicle', function(vehicleProps)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	MySQL.single('SELECT vehicle FROM owned_vehicles WHERE plate = ?', {vehicleProps.plate},
 	function(result)

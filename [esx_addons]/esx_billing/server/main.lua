@@ -1,6 +1,6 @@
 RegisterServerEvent('esx_billing:sendBill')
 AddEventHandler('esx_billing:sendBill', function(playerId, sharedAccountName, label, amount)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	local xTarget = ESX.GetPlayerFromId(playerId)
 	amount = ESX.Math.Round(amount)
 
@@ -22,7 +22,7 @@ AddEventHandler('esx_billing:sendBill', function(playerId, sharedAccountName, la
 end)
 
 ESX.RegisterServerCallback('esx_billing:getBills', function(source, cb)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	MySQL.query('SELECT amount, id, label FROM billing WHERE identifier = ?', {xPlayer.identifier},
 	function(result)
@@ -44,7 +44,7 @@ ESX.RegisterServerCallback('esx_billing:getTargetBills', function(source, cb, ta
 end)
 
 ESX.RegisterServerCallback('esx_billing:payBill', function(source, cb, billId)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 
 	MySQL.single('SELECT sender, target_type, target, amount FROM billing WHERE id = ?', {billId},
 	function(result)
