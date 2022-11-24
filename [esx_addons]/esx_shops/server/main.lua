@@ -23,7 +23,7 @@ end
 RegisterServerEvent('esx_shops:buyItem')
 AddEventHandler('esx_shops:buyItem', function(itemName, amount, zone)
 	local source = source
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = Player(source).state.Info
 	local Exists, price,label = GetItemFromShop(itemName,zone)
 	amount = ESX.Math.Round(amount)
 

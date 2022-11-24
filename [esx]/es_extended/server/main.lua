@@ -280,7 +280,7 @@ function loadESXPlayer(identifier, playerId, isNew)
   local xPlayer = CreateExtendedPlayer(playerId, identifier, userData.group, userData.accounts, userData.inventory, userData.weight, userData.job,
     userData.loadout, userData.playerName, userData.coords)
   ESX.Players[playerId] = xPlayer
-
+  Player(playerId).state:set("Info", xPlayer, false)
   if userData.firstname then
     xPlayer.set('firstName', userData.firstname)
     xPlayer.set('lastName', userData.lastname)
