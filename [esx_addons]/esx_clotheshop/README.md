@@ -1,4 +1,4 @@
-<h1 align='center'>[ESX] Clothe Shop</a></h1><p align='center'><b><a href='https://discord.esx-framework.org/'>Discord</a> - <a href='https://esx-framework.org/'>Website</a> - <a href='https://docs.esx-framework.org/legacy/installation'>Documentation</a></b></h5>
+<h1 align='center'>[ESX] Clothe Shop</a></h1><p align='center'><b><a href='https://discord.esx-framework.org/'>Discord</a> - <a href='https://esx-framework.org/'>Website</a> - <a href='https://documentation.esx-framework.org/legacy/installation'>Documentation</a></b></h5>
 
 It`s time to shine! Head over to the variety of stores this resource adds - to Get a new stylish look to out shine all your competition.
 

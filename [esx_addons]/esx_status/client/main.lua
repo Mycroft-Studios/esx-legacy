@@ -24,10 +24,13 @@ function GetStatusData(minimal)
 	return status
 end
 
-AddEventHandler('esx_status:registerStatus', function(name, default, color, visible, tickCallback)
+function RegisterStatus(name, default, color, visible, tickCallback)
 	local status = CreateStatus(name, default, color, visible, tickCallback)
-	table.insert(Status, status)
-end)
+	Status[#Status +1 ] = status
+end
+
+AddEventHandler('esx_status:registerStatus',RegisterStatus)
+exports("registerStatus", RegisterStatus)
 
 AddEventHandler('esx_status:unregisterStatus', function(name)
 	for k,v in ipairs(Status) do

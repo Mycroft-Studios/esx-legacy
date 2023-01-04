@@ -1,4 +1,4 @@
-<h1 align='center'>[ESX] Weapon Shops</a></h1><p align='center'><b><a href='https://discord.esx-framework.org/'>Discord</a> - <a href='https://esx-framework.org/'>Website</a> - <a href='https://docs.esx-framework.org/legacy/installation'>Documentation</a></b></h5>
+<h1 align='center'>[ESX] Weapon Shops</a></h1><p align='center'><b><a href='https://discord.esx-framework.org/'>Discord</a> - <a href='https://esx-framework.org/'>Website</a> - <a href='https://documentation.esx-framework.org/legacy/installation'>Documentation</a></b></h5>
 
 Would it be Los-Santos Without some weapons? No! This resource lets Players spend their hard earned drug money on buying the important things in life - revolvers and RPGs! Users can goto their trusty Ammu-Nation to get some Legal fun or get risky and frisky with the illegal black-market dealer 😉
 

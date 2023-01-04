@@ -5,7 +5,9 @@ TriggerEvent('esx_phone:registerNumber', 'ambulance', TranslateCap('alert_ambula
 end
 
 if GetResourceState("esx_society") ~= 'missing' then
-TriggerEvent('esx_society:registerSociety', 'ambulance', 'Ambulance', 'society_ambulance', 'society_ambulance', 'society_ambulance', {type = 'public'})
+	CreateThread(function()
+		exports["esx_society"]:registerSociety('ambulance', 'Ambulance', 'society_ambulance', 'society_ambulance', 'society_ambulance', {type = 'public'})
+	end)
 end
 
 RegisterNetEvent('esx_ambulancejob:revive')

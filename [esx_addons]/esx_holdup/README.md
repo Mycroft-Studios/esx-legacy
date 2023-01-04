@@ -1,4 +1,4 @@
-<h1 align='center'>[ESX] Hold Up</a></h1><p align='center'><b><a href='https://discord.esx-framework.org/'>Discord</a> - <a href='https://esx-framework.org/'>Website</a> - <a href='https://docs.esx-framework.org/legacy/installation'>Documentation</a></b></h5>
+<h1 align='center'>[ESX] Hold Up</a></h1><p align='center'><b><a href='https://discord.esx-framework.org/'>Discord</a> - <a href='https://esx-framework.org/'>Website</a> - <a href='https://documentation.esx-framework.org/legacy/installation'>Documentation</a></b></h5>
 
 "Freeze!" - is the only you will be hearing here. This resource adds **alot** of stores for you to rob and steal from, because how else are you going to get money? work? uh, Lame!
 

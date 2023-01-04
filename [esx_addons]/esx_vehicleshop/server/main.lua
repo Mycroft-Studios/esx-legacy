@@ -1,7 +1,6 @@
 local categories, vehicles = {}, {}
 
 TriggerEvent('esx_phone:registerNumber', 'cardealer', TranslateCap('dealer_customers'), false, false)
-TriggerEvent('esx_society:registerSociety', 'cardealer', TranslateCap('car_dealer'), 'society_cardealer', 'society_cardealer', 'society_cardealer', {type = 'private'})
 
 CreateThread(function()
 	local char = Config.PlateLetters
@@ -11,6 +10,7 @@ CreateThread(function()
 	if char > 8 then
 		print(('[^3WARNING^7] Character Limit Exceeded, ^5%s/8^7!'):format(char))
 	end
+	exports["esx_society"]:registerSociety('cardealer', TranslateCap('car_dealer'), 'society_cardealer', 'society_cardealer', 'society_cardealer', {type = 'private'})
 end)
 
 function RemoveOwnedVehicle(plate)
