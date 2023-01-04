@@ -710,7 +710,7 @@ INSERT INTO `vehicle_categories` (`name`, `label`) VALUES
 --
 
 CREATE TABLE `vehicle_sold` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `client` varchar(50) NOT NULL,
   `model` varchar(50) NOT NULL,
   `plate` varchar(50) NOT NULL,
@@ -847,12 +847,6 @@ ALTER TABLE `user_licenses`
 --
 ALTER TABLE `vehicle_categories`
   ADD PRIMARY KEY (`name`);
-
---
--- Indexes for table `vehicle_sold`
---
-ALTER TABLE `vehicle_sold`
-  ADD PRIMARY KEY (`plate`);
 
 --
 -- Indexes for table `whitelist`
